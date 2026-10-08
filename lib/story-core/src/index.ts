@@ -23,9 +23,9 @@ export const catalog = groups.flatMap((group, i) => group.split(" ").map(id => (
 })));
 export const exampleIds = ["umbrella", "cat", "lamp", "letter", "rain"];
 export const fixtures: Record<Mood, { title: string; story: string }> = {
-  calm: { title: "A Place by the Window", story: "Rain tapped the window as Mira folded her umbrella beside the lamp. A damp cat appeared at the door, carrying a letter under its collar. Inside was a single line: save me a warm spot. Mira spread a towel on the chair. The cat settled down, as though it had made a reservation." },
-  funny: { title: "The Very Important Guest", story: "The cat arrived in the rain with a letter demanding dinner at seven. Nora opened her umbrella to escort it inside and switched on the lamp. At seven sharp, it inspected an empty plate, then pushed the letter toward her. On the back, in tiny paw prints, it said: bring your own fish." },
-  mystery: { title: "The Light Next Door", story: "Each night of rain, the lamp in the empty house glowed. Tonight, a cat led Lena there beneath her umbrella. A letter waited on the step, addressed to tomorrow. Inside was a drawing of Lena opening it. She looked up. Behind the window, the cat was carefully sketching the next visitor." },
+  calm: { title: "A Dry Place to Wait", story: "Rain filled the lane outside Meera's flat in Pune. She left her umbrella by the door and turned on the lamp. A wet cat followed her inside, brushing against a letter from her brother. Meera moved the letter and spread a towel. The cat curled up beside her while she read it." },
+  funny: { title: "The Cat Came First", story: "In a Chennai flat, Ravi put a letter beside the lamp and opened his umbrella to check the rain. His cat slipped past him and sat on the letter. Ravi gently pulled it free. It was an invitation to his neighbour's dinner. The cat had already reached their kitchen before he found his sandals." },
+  mystery: { title: "Who Left the Letter?", story: "After the rain, Asha found a letter under the lamp outside her Jaipur home. It said, look behind your umbrella. Her cat was sitting there beside a small box. Inside was the key she had lost yesterday. Her neighbour waved from the gate. He had found it, and the cat had followed him home." },
 };
 export const words = (text: string) => text.trim().split(/\s+/u).filter(Boolean);
 export function storyProblems(value: unknown, ids: string[]): string[] {

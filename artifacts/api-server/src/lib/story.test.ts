@@ -37,6 +37,17 @@ describe("Groq generation", () => {
     const body = JSON.parse(mock.mock.calls[0]![1]!.body as string);
     expect(body.response_format.json_schema.strict).toBe(true);
     expect(body.messages[0].content).toBe(SYSTEM_PROMPT);
+    expect(body.messages[0].content).toContain("everyday Indian backdrop");
+    expect(body.messages[0].content).toContain("simple, natural English");
+    expect(body.messages.find((m: {role: string}) => m.role === "user").content).toContain("Indian setting:");
+  });
+  it("keeps Indian backdrop and easy-English directions during repair", async () => {
+    const mock=vi.fn<typeof fetch>().mockResolvedValueOnce(response({title:"Short",story:"cat"})).mockResolvedValueOnce(response(fixtures.calm));
+    await createStory(payload,options(mock));
+    const body=JSON.parse(mock.mock.calls[1]![1]!.body as string);
+    expect(body.messages[0].content).toContain("everyday Indian backdrop");
+    expect(body.messages[0].content).toContain("Keep English-only narration");
+    expect(body.messages.find((m: {role: string}) => m.role === "user").content).toContain("Indian setting:");
   });
   it("makes exactly one repair and quotes the failures", async () => {
     const mock=vi.fn<typeof fetch>().mockResolvedValueOnce(response({title:"Short",story:"cat"})).mockResolvedValueOnce(response(fixtures.calm));

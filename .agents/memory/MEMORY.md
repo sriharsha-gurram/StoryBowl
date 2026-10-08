@@ -1,0 +1,1 @@
+- [Story direction](story-direction.md) — everyday Indian backdrops and simple English; narration should sound natural.

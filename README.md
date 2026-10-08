@@ -29,7 +29,9 @@ Without a key, or with `DEMO_MODE=true`, `/api/status` reports demo mode. **Try 
 - `artifacts/api-server/src/routes/story.ts`: `GET /api/status` and `POST /api/story`.
 - `lib/api-spec/openapi.yaml`: API contract. Regenerate helpers using `pnpm --filter @workspace/api-spec codegen` after edits.
 
-Stories use a selected focal object, perspective, and mood-appropriate ending. The server validates a 45–65-word story and object coverage, and permits exactly one repair. Strict JSON schema has at most one fallback to JSON-object mode when the provider explicitly rejects the format. All attempts share a 20-second timeout. Coverage is a prefix/phrase heuristic, not a guarantee: it can produce false positives.
+Stories use everyday Indian settings, Indian names where useful, and simple spoken English. The prompt avoids stereotypes, complicated vocabulary, unexplained regional-language words, and confusing poetic endings. A selected focal object, perspective, setting, and mood-appropriate ending give each request variety. These are prompt instructions, not a guarantee of cultural accuracy or readability.
+
+The server validates a 45–65-word story and object coverage, and permits exactly one repair. Strict JSON schema has at most one fallback to JSON-object mode when the provider explicitly rejects the format. All attempts share a 20-second timeout. Coverage is a prefix/phrase heuristic, not a guarantee: it can produce false positives.
 
 ## Narration and privacy
 
