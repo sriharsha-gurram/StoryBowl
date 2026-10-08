@@ -6,7 +6,8 @@ Ordinary things. Unexpected stories. A personal English-language learning protot
 
 Use the configured StoryBowl and API Server Run workflows in Replit. Dependencies are managed with `pnpm install`; source and the lockfile are included. No database or account setup is required.
 
-- `pnpm test` — unit tests, with mocked Groq calls (no paid requests).
+- `pnpm test` — unit and composed frontend interaction tests, with mocked provider/API calls (no paid requests).
+- `pnpm --filter @workspace/storybowl test:interactions` — only the repeatable DOM and narration checks.
 - `pnpm run typecheck` — workspace TypeScript checks.
 - `PORT=18762 BASE_PATH=/ pnpm --filter @workspace/storybowl build` — production frontend.
 - `pnpm --filter @workspace/api-server build` — production API.
@@ -50,6 +51,8 @@ Selections and the last two stories live only in tab memory. In live mode, selec
 The IP limiter assumes access through Replit's trusted reverse proxy and uses only the rightmost proxy-appended `X-Forwarded-For` entry, never the client-controlled leftmost entry. If serving the API directly outside this configuration, disable forwarding-header trust or configure your trusted proxy explicitly. The prototype is not designed as an abuse-resistant public paid service.
 
 ## Verification limits
+
+Frontend interaction tests mount the real Home, ObjectShelf, StoryBowl, StoryResult, and speech hook in jsdom. Generated API functions return deterministic prepared stories; unexpected network calls fail. Speech synthesis uses a local mock with manually controlled events and no audio. Tests cover click/Enter/Space/drop selection, duplicate/full-tray limits, search/categories/removal/mood, canceled and out-of-order requests, result rendering, New story, and replay without generation. They need no secrets, ports, or running workflows.
 
 Mocked tests can verify request budgets, validation, and stale state without credentials. A real Groq request requires the owner's key. A screenshot verifies initial rendering, not drag/drop or audible narration. Cross-device voice quality and blocked-autoplay behavior require those browsers/devices.
 
