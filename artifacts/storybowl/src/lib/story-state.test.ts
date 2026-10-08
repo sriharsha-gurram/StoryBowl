@@ -48,14 +48,14 @@ describe("reducer stale handling", () => {
     for (let i = 0; i < 3; i++) { s = reducer(s, { type: "start" }); s = reducer(s, { type: "success", requestId: s.requestId, story: { ...story, id: String(i) } }); }
     expect(s.history.map(h => h.id)).toEqual(["1", "2"]);
   });
-  it("handles 3, 5 and 10 ingredients, duplicate adds and full bowl", () => {
+  it("handles 3, 5 and 10 objects, duplicate adds and full tray", () => {
     let s = initialState;
     for (const [i, object] of catalog.slice(0, 10).entries()) {
       s = reducer(s, { type: "add", id: object.id });
       expect(s.ids).toHaveLength(i + 1);
     }
     expect(reducer(s, { type: "add", id: s.ids[0]! })).toBe(s);
-    expect(reducer(s, { type: "add", id: catalog[10]!.id }).notice).toBe("The bowl is full (10 of 10)");
+    expect(reducer(s, { type: "add", id: catalog[10]!.id }).notice).toBe("Your object tray is full (10 of 10 objects)");
     expect(reducer(s, { type: "add", id: "unknown" })).toBe(s);
     expect(reducer(s, { type: "remove", id: s.ids[0]! }).ids).toHaveLength(9);
   });
@@ -75,7 +75,7 @@ describe("reducer stale handling", () => {
     expect(reset.category).toBe("All");
     expect(reset.mood).toBe("calm");
   });
-  it("New story retains its ingredients and saved result while pending", () => {
+  it("New story retains its objects and saved result while pending", () => {
     const s = loading();
     const ready = reducer(s, { type: "success", requestId: s.requestId, story });
     const next = reducer(ready, { type: "start" });

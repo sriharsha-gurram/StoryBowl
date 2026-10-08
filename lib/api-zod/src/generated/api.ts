@@ -28,6 +28,11 @@ export const GenerateStoryBody = zod.object({
   "recentOpenings": zod.array(zod.string().max(generateStoryBodyRecentOpeningsItemMax)).max(generateStoryBodyRecentOpeningsMax).optional()
 })
 
+export const generateStoryResponseWordCountMin = 100;
+export const generateStoryResponseWordCountMax = 150;
+
+
+
 export const GenerateStoryResponse = zod.object({
   "id": zod.string(),
   "objectIds": zod.array(zod.string()),
@@ -35,7 +40,7 @@ export const GenerateStoryResponse = zod.object({
   "language": zod.enum(['en']),
   "title": zod.string(),
   "story": zod.string(),
-  "wordCount": zod.number().int(),
+  "wordCount": zod.number().int().min(generateStoryResponseWordCountMin).max(generateStoryResponseWordCountMax),
   "source": zod.enum(['ai', 'demo'])
 })
 

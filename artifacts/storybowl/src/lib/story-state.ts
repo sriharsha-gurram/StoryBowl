@@ -24,7 +24,7 @@ export const initialState: State = {
   result: null, error: null, history: [], notice: null,
 };
 
-// Any change to ingredients or mood invalidates in-flight work and clears the result.
+// Any change to objects or mood invalidates in-flight work and clears the result.
 const invalidate = (s: State, patch: Partial<State>): State =>
   ({ ...s, ...patch, requestId: s.requestId + 1, phase: "idle", result: null, error: null });
 
@@ -33,11 +33,11 @@ export function reducer(s: State, a: Action): State {
     case "add":
       if (!catalog.some(o => o.id === a.id)) return s;
       if (s.ids.includes(a.id)) return s;
-      if (s.ids.length >= MAX) return { ...s, notice: `The bowl is full (${MAX} of ${MAX})` };
-      return invalidate(s, { ids: [...s.ids, a.id], notice: s.ids.length === MAX - 1 ? `The bowl is full (${MAX} of ${MAX})` : null });
+      if (s.ids.length >= MAX) return { ...s, notice: `Your object tray is full (${MAX} of ${MAX} objects)` };
+      return invalidate(s, { ids: [...s.ids, a.id], notice: s.ids.length === MAX - 1 ? `Your object tray is full (${MAX} of ${MAX} objects)` : null });
     case "remove":
       return invalidate(s, { ids: s.ids.filter(i => i !== a.id), notice: null });
-    case "set": return invalidate(s, { ids: a.ids.slice(0, MAX), notice: a.ids.length >= MAX ? `The bowl is full (${MAX} of ${MAX})` : null });
+    case "set": return invalidate(s, { ids: a.ids.slice(0, MAX), notice: a.ids.length >= MAX ? `Your object tray is full (${MAX} of ${MAX} objects)` : null });
     case "mood": return a.mood === s.mood ? s : invalidate(s, { mood: a.mood });
     case "query": return { ...s, query: a.query };
     case "category": return { ...s, category: a.category };

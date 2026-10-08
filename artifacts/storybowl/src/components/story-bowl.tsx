@@ -1,54 +1,59 @@
-// StoryBowl and MoodPicker: the drop stage with snapped slots plus mood radios.
+// StoryBowl and MoodPicker: the rectangular drop surface with snapped slots plus mood radios.
 // Together they are the "assembly" half of the toy, before any story exists.
 import { X } from "lucide-react";
 import { catalog, type Mood } from "@workspace/story-core";
 import { iconMap } from "@/lib/icons";
-import { MAX } from "@/lib/story-state";
+import { MAX, MIN } from "@/lib/story-state";
 
 export function StoryBowl({ ids, notice, onAdd, onRemove }: { ids: string[]; notice: string | null; onAdd: (id: string) => void; onRemove: (id: string) => void }) {
+  const ready = ids.length >= MIN;
   return (
     <div>
       <div data-testid="stage" onDragOver={e => e.preventDefault()}
         onDrop={e => { e.preventDefault(); const id = e.dataTransfer.getData("text/plain"); if (catalog.some(o => o.id === id)) onAdd(id); }}
-        className="relative mx-auto h-[300px] w-full max-w-[640px]">
-        <div className="absolute inset-0 rounded-[50%] border-2 border-[#C9C6D4] bg-[#FAF9F6]" aria-hidden />
+        className="relative min-h-[210px] w-full rounded-2xl border-2 border-dashed border-[#C5CBEF] bg-[#F5F7FF] p-4">
         {ids.length === 0 && (
-          <p className="absolute inset-0 flex items-center justify-center px-24 text-center text-[#5E6473]" data-testid="text-empty">Drag in 3–10 objects, or click them to add.</p>
+          <p className="absolute inset-0 flex items-center justify-center px-8 text-center text-[#454A5A]" data-testid="text-empty">Drag in 3–10 objects, or click them to add.</p>
         )}
-        <ul className="absolute inset-x-[9%] inset-y-[14%] grid grid-cols-5 grid-rows-2 gap-1" aria-label="Ingredients in the bowl">
+        <ul className="grid grid-cols-3 gap-2.5 sm:grid-cols-5" aria-label="Objects in your collection">
           {ids.map(id => {
             const o = catalog.find(c => c.id === id)!; const Icon = iconMap[id]!;
             return (
-              <li key={id} className="relative flex flex-col items-center justify-center rounded-xl bg-white/80 text-xs capitalize" data-testid={`slot-${id}`}>
-                <Icon className="h-6 w-6" strokeWidth={1.5} aria-hidden /><span>{o.label}</span>
+              <li key={id} className="relative flex h-[84px] flex-col items-center justify-center gap-1 rounded-xl border border-[#DDE2F8] bg-white text-xs capitalize shadow-[0_1px_2px_rgba(30,35,60,0.06)]" data-testid={`slot-${id}`}>
+                <Icon className="h-6 w-6 text-[#2A3FB0]" strokeWidth={1.5} aria-hidden /><span className="max-w-full truncate px-1">{o.label}</span>
                 <button type="button" aria-label={`Remove ${o.label}`} onClick={() => onRemove(id)} data-testid={`remove-${id}`}
-                  className="absolute -right-1 -top-1 rounded-full border border-[#9A97A8] bg-white p-0.5"><X className="h-3 w-3" aria-hidden /></button>
+                  className="absolute -right-1.5 -top-1.5 rounded-full border border-[#9A9DA8] bg-white p-0.5 hover:bg-[#F6F3EA]"><X className="h-3 w-3" aria-hidden /></button>
               </li>
             );
           })}
         </ul>
       </div>
-      <p className="mt-2 text-center text-sm text-[#5E6473]" aria-live="polite" data-testid="text-count">
-        {notice ?? `${ids.length} of ${MAX} ingredients`}
-      </p>
+      <div className="mt-2.5 flex items-center gap-3">
+        <div className="h-1.5 flex-1 overflow-hidden rounded-full bg-[#ECE8DD]" aria-hidden>
+          <div className={`h-full origin-left rounded-full transition-transform ${ready ? "bg-[#3F5BE0]" : "bg-[#F2A93B]"}`} style={{ transform: `scaleX(${ids.length / MAX})`, width: "100%" }} />
+        </div>
+        <p className="text-sm font-medium text-[#454A5A]" aria-live="polite" data-testid="text-count">
+          {notice ?? `${ids.length} of ${MAX} objects`}
+        </p>
+      </div>
     </div>
   );
 }
 
-const moods: { id: Mood; name: string; blurb: string }[] = [
-  { id: "calm", name: "Calm", blurb: "A gentle little escape" },
-  { id: "funny", name: "Funny", blurb: "A small unexpected laugh" },
-  { id: "mystery", name: "Mystery", blurb: "A curious turn of events" },
+const moods: { id: Mood; name: string; blurb: string; tint: string }[] = [
+  { id: "calm", name: "Calm", blurb: "A gentle little escape", tint: "bg-[#EAF6F0]" },
+  { id: "funny", name: "Funny", blurb: "A small unexpected laugh", tint: "bg-[#FFF3DC]" },
+  { id: "mystery", name: "Mystery", blurb: "A curious turn of events", tint: "bg-[#EEF0FF]" },
 ];
 
 export function MoodPicker({ mood, onChange }: { mood: Mood; onChange: (m: Mood) => void }) {
   return (
     <div role="radiogroup" aria-label="Mood" className="grid gap-3 sm:grid-cols-3">
       {moods.map(m => (
-        <label key={m.id} className={`cursor-pointer rounded-2xl border p-3 has-[:focus-visible]:outline has-[:focus-visible]:outline-[3px] has-[:focus-visible]:outline-[#5B4BDB] ${mood === m.id ? "border-[#5B4BDB] bg-[#F0EDFF]" : "border-[#C9C6D4] bg-white"}`}>
+        <label key={m.id} className={`cursor-pointer rounded-xl border p-3.5 transition-colors has-[:focus-visible]:outline has-[:focus-visible]:outline-[3px] has-[:focus-visible]:outline-[#3F5BE0] ${m.tint} ${mood === m.id ? "border-[#3F5BE0] ring-1 ring-[#3F5BE0]" : "border-transparent hover:border-[#C9C4B4]"}`}>
           <input type="radio" name="mood" className="sr-only" checked={mood === m.id} onChange={() => onChange(m.id)} data-testid={`radio-${m.id}`} />
-          <span className="block font-semibold">{mood === m.id ? "✓ " : ""}{m.name}</span>
-          <span className="block text-sm text-[#5E6473]">{m.blurb}</span>
+          <span className="block font-semibold">{mood === m.id ? "Selected: " : ""}{m.name}</span>
+          <span className="block text-sm text-[#454A5A]">{m.blurb}</span>
         </label>
       ))}
     </div>

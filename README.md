@@ -19,7 +19,7 @@ Add **GROQ_API_KEY** in the project's **Tools → Secrets**, then restart the AP
 
 ## Demo mode
 
-Without a key, or with `DEMO_MODE=true`, `/api/status` reports demo mode. **Try the example** loads umbrella, cat, lamp, letter, and rain. Each mood has one prepared 45–65-word story. Other selections remain selectable but cannot generate until the owner supplies the key. **New story** in demo repeats the prepared mood fixture. Live provider failures never become canned stories.
+Without a key, or with `DEMO_MODE=true`, `/api/status` reports demo mode. **Try the example** loads umbrella, cat, lamp, letter, and rain. Each mood has one prepared 100–150-word story. Other selections remain selectable but cannot generate until the owner supplies the key. **New story** in demo repeats the prepared mood fixture. Live provider failures never become canned stories.
 
 ## Read the code
 
@@ -31,7 +31,7 @@ Without a key, or with `DEMO_MODE=true`, `/api/status` reports demo mode. **Try 
 
 Stories use everyday Indian settings, Indian names where useful, and simple spoken English. The prompt avoids stereotypes, complicated vocabulary, unexplained regional-language words, and confusing poetic endings. A selected focal object, perspective, setting, and mood-appropriate ending give each request variety. These are prompt instructions, not a guarantee of cultural accuracy or readability.
 
-The server validates a 45–65-word story and object coverage, and permits exactly one repair. Strict JSON schema has at most one fallback to JSON-object mode when the provider explicitly rejects the format. All attempts share a 20-second timeout. Coverage is a prefix/phrase heuristic, not a guarantee: it can produce false positives.
+The server validates a 100–150-word story (title excluded) and object coverage, and permits exactly one repair. The prompt aims for 120–135 words, realistic events, a small complication, and a clear ending. Strict JSON schema has at most one fallback to JSON-object mode when the provider explicitly rejects the format. All attempts share a 20-second timeout. Coverage is a prefix/phrase heuristic, not a guarantee: it can produce false positives.
 
 ## Narration and privacy
 
@@ -45,7 +45,7 @@ Selections and the last two stories live only in tab memory. In live mode, selec
 - **429:** wait before trying again; Groq may also enforce its own quota. The app allows 20 requests per ten minutes per IP. Its in-memory limit resets on restart, is per process, and is **not a spending cap**.
 - **No English voice / blocked narration:** story text still works. Press Play to retry, or enable an English system voice.
 - **Model unavailable:** check the owner's key, Groq access, and `GROQ_MODEL`; the app never changes models silently.
-- **Invalid or timed-out story:** keep your ingredients and request New story / Make my story again.
+- **Invalid or timed-out story:** keep your objects and request New story / Make my story again.
 
 The IP limiter assumes access through Replit's trusted reverse proxy and uses only the rightmost proxy-appended `X-Forwarded-For` entry, never the client-controlled leftmost entry. If serving the API directly outside this configuration, disable forwarding-header trust or configure your trusted proxy explicitly. The prototype is not designed as an abuse-resistant public paid service.
 

@@ -63,6 +63,10 @@ export interface Story {
   language: StoryLanguage;
   title: string;
   story: string;
+  /**
+     * @minimum 100
+     * @maximum 150
+     */
   wordCount: number;
   source: StorySource;
 }

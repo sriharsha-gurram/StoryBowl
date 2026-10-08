@@ -57,43 +57,47 @@ export default function Home() {
 
   const need = MIN - s.ids.length;
   const loading = s.phase === "loading";
-  const outline = "inline-flex items-center gap-1.5 rounded-xl border border-[#9A97A8] bg-white px-3 py-2 text-sm font-medium hover:bg-[#F0EDFF]";
+  const outline = "inline-flex items-center gap-1.5 rounded-lg border border-[#9A9DA8] bg-white px-3 py-2 text-sm font-medium hover:bg-[#F6F3EA]";
 
   return (
-    <div className="min-h-[100dvh] bg-[#FAF9F6] text-[#202432]">
+    <div className="min-h-[100dvh] overflow-x-hidden bg-[#FAF8F3] text-[#1E2230]">
       <header className="mx-auto flex max-w-[1360px] flex-wrap items-center justify-between gap-3 px-6 py-4">
-        <div className="flex items-baseline gap-3">
-          <span className="text-xl font-bold tracking-tight">StoryBowl</span>
-          <span className="text-sm text-[#5E6473]">Ordinary things. Unexpected stories.</span>
+        <div className="flex items-center gap-3">
+          <span className="grid h-9 w-9 place-items-center rounded-lg bg-[#3F5BE0] text-white" aria-hidden><Sparkles className="h-5 w-5" /></span>
+          <span className="font-display text-xl font-bold">StoryBowl</span>
+          <span className="hidden text-sm text-[#454A5A] md:inline">Ordinary things. Unexpected stories.</span>
         </div>
         <div className="flex gap-2">
           <HowItWorks />
           <button type="button" className={outline} onClick={reset} data-testid="button-reset"><RotateCcw className="h-4 w-4" aria-hidden />Reset</button>
         </div>
       </header>
-      {demo && <p className="mx-auto max-w-[1360px] px-6 pb-2 text-sm text-[#5E6473]" data-testid="banner-demo">Demo mode: prepared example stories</p>}
-      <main className="mx-auto grid max-w-[1360px] gap-6 px-6 pb-10 lg:grid-cols-[300px_minmax(0,1fr)]">
+      {demo && <p className="mx-auto max-w-[1360px] px-6 pb-2 text-sm text-[#454A5A]" data-testid="banner-demo">Demo mode: prepared example stories</p>}
+      <main className="mx-auto grid max-w-[1360px] gap-6 px-6 pb-10 lg:grid-cols-[minmax(320px,400px)_minmax(0,1fr)]">
         <ObjectShelf ids={s.ids} query={s.query} category={s.category}
           onQuery={q => dispatch({ type: "query", query: q })} onCategory={c => dispatch({ type: "category", category: c })} onAdd={add} />
-        <section aria-labelledby="story-h" className="space-y-5 rounded-[20px] border border-[#E7E5EC] bg-white p-6 shadow-sm">
-          <h2 id="story-h" className="text-lg font-semibold">What happens when these meet?</h2>
+        <section aria-labelledby="story-h" className="min-w-0 space-y-5 rounded-2xl border border-[#E8E4DA] bg-white p-6 shadow-[0_1px_2px_rgba(30,35,60,0.04)] lg:max-h-[calc(100dvh-132px)] lg:overflow-y-auto">
+          <div>
+            <h2 id="story-h" className="font-display text-2xl font-bold">What happens when these meet?</h2>
+            <p className="mt-1 text-sm text-[#454A5A]">A believable Indian-set story in simple English, 100–150 words.</p>
+          </div>
           <StoryBowl ids={s.ids} notice={s.notice} onAdd={add} onRemove={remove} />
-          <div className="flex flex-wrap justify-center gap-2">
+          <div className="flex flex-wrap gap-2">
             <button type="button" className={outline} onClick={() => setIds(surprise())} data-testid="button-surprise"><Shuffle className="h-4 w-4" aria-hidden />Surprise me</button>
             <button type="button" className={outline} onClick={() => setIds(exampleIds)} data-testid="button-example"><Sparkles className="h-4 w-4" aria-hidden />Try the example</button>
           </div>
           <MoodPicker mood={s.mood} onChange={setMood} />
           <div className="flex flex-wrap items-center gap-4">
-            <span className="text-sm text-[#5E6473]">English</span>
+            <span className="rounded-full bg-[#F1EEE4] px-2.5 py-1 text-xs font-medium text-[#454A5A]">English · 100–150 words · about 45–70 seconds</span>
             {!s.result && (
               <button type="button" onClick={make} disabled={need > 0 || loading} data-testid="button-make"
-                className="inline-flex items-center gap-2 rounded-xl bg-[#5B4BDB] px-5 py-2.5 font-semibold text-white disabled:bg-[#E7E5EC] disabled:text-[#5E6473]">
+                className="inline-flex items-center gap-2 rounded-lg bg-[#3F5BE0] px-5 py-2.5 font-semibold text-white hover:bg-[#344CC4] disabled:bg-[#ECE8DD] disabled:text-[#454A5A]">
                 <Play className="h-4 w-4" aria-hidden />{need > 0 ? `Add ${need} more object${need === 1 ? "" : "s"}` : "Make my story"}
               </button>
             )}
             {loading && <span className="inline-flex items-center gap-2 text-sm" role="status" data-testid="text-loading"><Loader className="h-4 w-4 animate-spin" aria-hidden />Finding the thread…</span>}
           </div>
-          {s.error && <p role="alert" className="rounded-xl border border-[#B3261E] p-3 text-sm" data-testid="text-error">{s.error}</p>}
+          {s.error && <p role="alert" className="rounded-lg border border-[#B3261E] bg-[#FFF4F2] p-3 text-sm" data-testid="text-error">{s.error}</p>}
           {s.result && (
             <StoryResult story={s.result} loading={loading} speaking={speech.speaking} blocked={speech.blocked} supported={speech.supported}
               onPlay={() => speech.speak(s.result!.story)} onStop={speech.stop} onNew={make} />

@@ -24,9 +24,15 @@ describe("shared registry and validation", () => {
   it("validates all demo moods, word count, title and coverage", () => {
     for (const story of Object.values(fixtures)) expect(storyProblems(story,exampleIds)).toEqual([]);
     expect(storyProblems({title:"A",story:"cat"},exampleIds)).toContain("too short: 1 words");
-    expect(storyProblems({title:"A",story:"cat ".repeat(78)},exampleIds)).toContain("too long: 78 words");
+    expect(storyProblems({title:"A",story:"cat ".repeat(178)},exampleIds)).toContain("too long: 178 words");
     expect(storyProblems(fixtures.calm,["rocket"])).toContain("missing: rocket");
     expect(storyProblems(null,exampleIds)).toEqual(["invalid JSON object"]);
+    expect(storyProblems({ ...fixtures.calm, story: `${fixtures.calm.story} }` }, exampleIds)).toContain("stray JSON closing character in story");
+  });
+  it("enforces inclusive 100–150 word boundaries excluding the title", () => {
+    for (const n of [100, 125, 150]) expect(storyProblems({ title: "A Simple Cat Story", story: "cat ".repeat(n) }, ["cat"])).toEqual([]);
+    expect(storyProblems({ title: "Cat", story: "cat ".repeat(99) }, ["cat"])).toEqual(["too short: 99 words"]);
+    expect(storyProblems({ title: "Cat", story: "cat ".repeat(151) }, ["cat"])).toEqual(["too long: 151 words"]);
   });
 });
 describe("Groq generation", () => {
@@ -36,9 +42,13 @@ describe("Groq generation", () => {
     expect(mock).toHaveBeenCalledTimes(1);
     const body = JSON.parse(mock.mock.calls[0]![1]!.body as string);
     expect(body.response_format.json_schema.strict).toBe(true);
+    expect(body.max_completion_tokens).toBe(4096);
+    expect(body.reasoning_effort).toBe("low");
     expect(body.messages[0].content).toBe(SYSTEM_PROMPT);
     expect(body.messages[0].content).toContain("everyday Indian backdrop");
     expect(body.messages[0].content).toContain("simple, natural English");
+    expect(body.messages[0].content).toContain("100–150 words is required");
+    expect(body.messages[0].content).toContain("Keep events realistic and interesting");
     expect(body.messages.find((m: {role: string}) => m.role === "user").content).toContain("Indian setting:");
   });
   it("keeps Indian backdrop and easy-English directions during repair", async () => {
@@ -54,6 +64,7 @@ describe("Groq generation", () => {
     await createStory(payload,options(mock));
     expect(mock).toHaveBeenCalledTimes(2);
     expect(mock.mock.calls[1]![1]!.body).toContain("too short");
+    expect(mock.mock.calls[1]![1]!.body).toContain("100–150 words");
   });
   it("returns STORY_INVALID after one failed repair", async () => {
     const mock=vi.fn<typeof fetch>().mockImplementation(async()=>response({title:"Short",story:"cat"}));

@@ -1,5 +1,6 @@
 /* Defines the light StoryBowl theme, focus rings, and reduced-motion behavior. */
 /* Tailwind utilities share these tokens with the small accessible popover components. */
+@import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700&family=DM+Sans:wght@400;500;600;700&display=swap');
 @import 'tailwindcss';
 @import 'tw-animate-css';
 @plugin "@tailwindcss/typography";
@@ -436,20 +437,22 @@
 
 /* StoryBowl palette (light only); overrides scaffold placeholders above. */
 :root {
-  --background: 45 29% 97%; --foreground: 229 23% 16%;
-  --border: 252 14% 91%; --card: 0 0% 100%; --card-foreground: 229 23% 16%; --card-border: 252 14% 91%;
-  --sidebar: 0 0% 100%; --sidebar-foreground: 229 23% 16%; --sidebar-border: 252 14% 91%;
-  --sidebar-primary: 247 65% 56%; --sidebar-primary-foreground: 0 0% 100%;
-  --sidebar-accent: 250 100% 96%; --sidebar-accent-foreground: 247 65% 56%; --sidebar-ring: 247 65% 56%;
-  --popover: 0 0% 100%; --popover-foreground: 229 23% 16%; --popover-border: 252 14% 91%;
-  --primary: 247 65% 56%; --primary-foreground: 0 0% 100%;
-  --secondary: 250 100% 96%; --secondary-foreground: 229 23% 16%;
-  --muted: 250 100% 96%; --muted-foreground: 224 11% 42%;
-  --accent: 250 100% 96%; --accent-foreground: 247 65% 40%;
+  --background: 40 33% 97%; --foreground: 222 28% 14%;
+  --border: 40 16% 88%; --card: 0 0% 100%; --card-foreground: 222 28% 14%; --card-border: 40 16% 88%;
+  --sidebar: 0 0% 100%; --sidebar-foreground: 222 28% 14%; --sidebar-border: 40 16% 88%;
+  --sidebar-primary: 226 76% 52%; --sidebar-primary-foreground: 0 0% 100%;
+  --sidebar-accent: 224 100% 97%; --sidebar-accent-foreground: 226 76% 40%; --sidebar-ring: 226 76% 52%;
+  --popover: 0 0% 100%; --popover-foreground: 222 28% 14%; --popover-border: 40 16% 88%;
+  --primary: 226 76% 52%; --primary-foreground: 0 0% 100%;
+  --secondary: 224 100% 97%; --secondary-foreground: 222 28% 14%;
+  --muted: 40 25% 94%; --muted-foreground: 222 12% 38%;
+  --accent: 224 100% 97%; --accent-foreground: 226 76% 40%;
   --destructive: 0 62% 40%; --destructive-foreground: 0 0% 100%;
-  --input: 230 12% 62%; --ring: 247 65% 56%;
-  --chart-1: 247 65% 56%; --chart-2: 247 65% 56%; --chart-3: 247 65% 56%; --chart-4: 247 65% 56%; --chart-5: 247 65% 56%;
-  --app-font-sans: system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --input: 222 10% 60%; --ring: 226 76% 52%;
+  --chart-1: 226 76% 52%; --chart-2: 226 76% 52%; --chart-3: 226 76% 52%; --chart-4: 226 76% 52%; --chart-5: 226 76% 52%;
+  --app-font-sans: 'DM Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --app-font-display: 'Bricolage Grotesque', 'DM Sans', system-ui, sans-serif;
 }
+.font-display { font-family: var(--app-font-display); letter-spacing: -0.02em; }
 :focus-visible { outline: 3px solid hsl(var(--ring)); outline-offset: 2px; }
 @media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
