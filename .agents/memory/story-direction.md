@@ -14,6 +14,12 @@ Stories should be 100–150 words, more realistic and interesting given the sele
 
 **How to apply:** Carry these requirements into future writing, UI changes, accessibility labels, error messages, and demos. The user chose to keep browser voices; do not add a hosted narrator without a new request.
 
+The UI is for a general audience: do not specify India, Indian, or a region in interface copy. Remove unnecessary language, word-count, and listening-duration tags; keep the page natural, light, and easy to navigate.
+
+**Why:** The user explicitly separated general-audience UI wording from story-generation direction and rejected the "English · 100–150 words · about 45–70 seconds" tag.
+
+**How to apply:** Keep the existing story backdrop and length rules behind the scenes, not as promotional labels or badges. Generated story text may still name its setting; this instruction concerns the interface.
+
 Inspect actual generated stories before claiming narrative realism, especially at ten selected objects. Prompt instructions and valid word counts do not establish a believable plot.
 
 **Why:** Live ten-object samples sometimes became fantastical or gave weak explanations despite explicit realism instructions and plain-language examples.

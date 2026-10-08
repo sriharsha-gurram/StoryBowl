@@ -156,13 +156,16 @@ describe("generation and narration", () => {
   it("renders a 100–150-word story; Replay/Stop/Play never generate; New story retains objects", async () => {
     generate.mockResolvedValueOnce(prepared);
     const { user } = await openHome();
+    expect(screen.queryByText(/Indian|India\b/)).not.toBeInTheDocument();
+    expect(screen.queryByText(/English|100–150|45–70/)).not.toBeInTheDocument();
     await startExample(user);
     expect(await screen.findByTestId("text-title")).toHaveTextContent(prepared.title);
     expect(screen.getByTestId("text-story").textContent).toBe(prepared.story);
     const count = words(screen.getByTestId("text-story").textContent!).length;
     expect(count).toBeGreaterThanOrEqual(100);
     expect(count).toBeLessThanOrEqual(150);
-    expect(screen.getByTestId("text-wordcount")).toHaveTextContent(`${count} words`);
+    expect(screen.queryByTestId("text-wordcount")).not.toBeInTheDocument();
+    expect(screen.queryByText(/seconds to hear/)).not.toBeInTheDocument();
     expect(screen.getByTestId("text-source")).toHaveTextContent("AI-generated fiction");
     expect(screen.queryByTestId("button-make")).not.toBeInTheDocument();
     expect(generate).toHaveBeenCalledTimes(1);

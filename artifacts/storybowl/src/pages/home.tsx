@@ -79,7 +79,7 @@ export default function Home() {
         <section aria-labelledby="story-h" className="min-w-0 space-y-5 rounded-2xl border border-[#E8E4DA] bg-white p-6 shadow-[0_1px_2px_rgba(30,35,60,0.04)] lg:max-h-[calc(100dvh-132px)] lg:overflow-y-auto">
           <div>
             <h2 id="story-h" className="font-display text-2xl font-bold">What happens when these meet?</h2>
-            <p className="mt-1 text-sm text-[#454A5A]">A believable Indian-set story in simple English, 100–150 words.</p>
+            <p className="mt-1 text-sm text-[#454A5A]">Choose a few objects and a mood. Make a story.</p>
           </div>
           <StoryBowl ids={s.ids} notice={s.notice} onAdd={add} onRemove={remove} />
           <div className="flex flex-wrap gap-2">
@@ -88,7 +88,6 @@ export default function Home() {
           </div>
           <MoodPicker mood={s.mood} onChange={setMood} />
           <div className="flex flex-wrap items-center gap-4">
-            <span className="rounded-full bg-[#F1EEE4] px-2.5 py-1 text-xs font-medium text-[#454A5A]">English · 100–150 words · about 45–70 seconds</span>
             {!s.result && (
               <button type="button" onClick={make} disabled={need > 0 || loading} data-testid="button-make"
                 className="inline-flex items-center gap-2 rounded-lg bg-[#3F5BE0] px-5 py-2.5 font-semibold text-white hover:bg-[#344CC4] disabled:bg-[#ECE8DD] disabled:text-[#454A5A]">

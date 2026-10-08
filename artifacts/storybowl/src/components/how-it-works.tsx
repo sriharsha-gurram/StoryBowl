@@ -15,7 +15,7 @@ export function HowItWorks() {
         <ol className="list-decimal space-y-1.5 pl-5">
           <li>Pick 3–10 everyday objects by clicking or dragging them onto the drop surface.</li>
           <li>Choose a mood: Calm, Funny or Mystery.</li>
-          <li>Press Make my story, then listen or read along: 100–150 words, about 45–70 seconds.</li>
+          <li>Press Make my story, then listen or read along.</li>
         </ol>
         <p className="mt-3 border-t border-[#E8E4DA] pt-3 text-[#454A5A]">
           About and privacy: in live mode the selected object names and generated stories are sent to the configured AI provider. Speech uses your device's own voices.

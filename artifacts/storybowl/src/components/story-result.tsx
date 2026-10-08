@@ -22,11 +22,7 @@ export function StoryResult({ story, loading, speaking, blocked, supported, onPl
   const btn = "inline-flex items-center gap-1.5 rounded-lg border border-[#9A9DA8] bg-white px-3.5 py-2 text-sm font-medium hover:bg-[#F6F3EA] disabled:opacity-50";
   return (
     <article className="rounded-2xl border border-[#E8E4DA] bg-[#FFFDF8] p-6 sm:p-8" data-testid="result">
-      <div className="flex flex-wrap gap-2 text-xs font-medium">
-        <span className="rounded-full bg-[#EEF1FF] px-2.5 py-1 text-[#2A3FB0]" data-testid="text-source">{story.source === "demo" ? "Demo story" : "AI-generated fiction"}</span>
-        <span className="rounded-full bg-[#FFF3DC] px-2.5 py-1 text-[#7A4B00]" data-testid="text-wordcount">{story.wordCount} words</span>
-        <span className="rounded-full bg-[#EAF6F0] px-2.5 py-1 text-[#1D5B40]">about 45–70 seconds to hear</span>
-      </div>
+      <p className="text-xs text-[#5B6070]" data-testid="text-source">{story.source === "demo" ? "Demo story" : "AI-generated fiction"}</p>
       <div ref={textRef} className="mx-auto mt-4 max-w-[62ch]">
         <h3 className="font-display text-3xl font-bold leading-tight" data-testid="text-title">{story.title}</h3>
         <p className="mt-4 whitespace-pre-wrap text-[1.075rem] leading-[1.75] text-[#2B3040]" data-testid="text-story">{story.story}</p>
