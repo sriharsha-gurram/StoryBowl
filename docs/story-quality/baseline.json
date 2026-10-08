@@ -1,0 +1,360 @@
+{
+  "recordedAt": "2026-10-08T03:13:56.367Z",
+  "model": "openai/gpt-oss-20b",
+  "label": "baseline",
+  "systemPrompt": "Write a short, complete fictional story for spoken narration. Aim for 120–135 words, excluding the title; 100–150 words is required. Use the extra space for a believable situation, a small complication, and an earned ending, not filler. Set every story in an everyday Indian backdrop. Use one clear, believable detail from daily life in India, such as a neighbourhood flat, a school courtyard, a local bus stop, a market lane, a coastal town, or a hill town. Use Indian names when a named person is needed. India includes modern cities, small towns, and villages; vary the setting and do not rely on stereotypes, accents, poverty, religion, or festivals to make it Indian. Write in simple, natural English that is easy to understand when heard once. Prefer common words, short sentences, and clear actions. Use complete, grammatical sentences with natural articles. Keep dialogue brief and conversational. Avoid fancy vocabulary, flowery descriptions, obscure idioms, abstract symbolism, poetic metaphors, and unexplained Hindi or other regional-language words. Keep English-only narration. Say 'the rain stopped' rather than 'the clouds surrendered their sorrow'. Do not make streets hum, rain forget, or objects symbolise feelings. Include every selected object naturally, using its label or a close variant. Let two or three objects drive the action and the rest support it; do not merely list them. Keep events realistic and interesting. Objects should behave like normal objects and animals like normal animals. An unusual selected object can be a toy, a picture, a stage prop, or something a person talks about when that makes sense. Do not make animals write letters or add unexplained magic. Mention the chosen Indian location clearly. Give the story a concrete situation, a change, and a satisfying final beat. Keep the cause and effect easy to follow. Calm is warm and unhurried, with a small helpful action rather than atmospheric description. Funny lands a specific comic payoff caused by an action or misunderstanding, not merely someone laughing. Mystery has a curious reveal without horror; introduce one clear question early, then explain that same question in the ending instead of ending with a confusing poetic image or an unrelated discovery. Avoid moral lessons, inspirational endings, 'Once upon a time', preambles, hashtags, and explaining how the story was written. Do not explain the joke or label the story structure with phrases such as 'The reversal', 'The twist', or 'The moral'. Show what happened and end with an action or brief dialogue. Introduce few extra props. No explicit sexual content, graphic violence, hateful content, or dangerous instructions. Return only the requested JSON with a simple title of at most eight words and the story.",
+  "controls": {
+    "choiceIndex": 0,
+    "temperature": 0.7,
+    "timeoutMs": 20000,
+    "maxRepair": 1
+  },
+  "rubric": {
+    "plainEnglish": "0: hard to follow aloud; 1: minor awkward/abstract phrases; 2: simple, grammatical actions understood on one hearing.",
+    "indianBackdrop": "0: absent/stereotyped; 1: named Indian place only; 2: ordinary Indian setting integrated into the action without stereotypes.",
+    "causeEffect": "0: impossible/contradictory or unexplained event; 1: plausible but a causal gap or unearned ending; 2: setup, change and ending form a believable chain.",
+    "objectUse": "0: list or forced/impossible uses; 1: all mentioned but some decorative/contrived; 2: two or three drive action, others have plausible supporting roles.",
+    "moodPayoff": "0: absent, or mystery answers a different question; 1: recognisable mood but weak ending; 2: helpful calm action, action-caused comic payoff, or evidence resolving the original mystery."
+  },
+  "samples": [
+    {
+      "id": "3-calm",
+      "payload": {
+        "objectIds": [
+          "key",
+          "door",
+          "cat"
+        ],
+        "mood": "calm",
+        "recentOpenings": []
+      },
+      "elapsedMs": 384,
+      "calls": [
+        {
+          "status": 200,
+          "elapsedMs": 378,
+          "responseFormat": "json_schema",
+          "repair": false,
+          "usage": {
+            "promptTokens": 942,
+            "completionTokens": 177,
+            "totalTokens": 1119,
+            "reasoningTokens": 13,
+            "queueTime": 0.020837959,
+            "promptTime": 0.05744154,
+            "completionTime": 0.189510563,
+            "totalTime": 0.246952103
+          },
+          "content": "{\"title\":\"A Quiet Welcome\",\"story\":\"A soft evening settled over a quiet neighbourhood in Pune. Arjun walked past the narrow lane where his old neighbour’s house stood. He had forgotten his key in the kitchen, and the door was locked. He reached into his pocket, pulled out the small brass key, and turned it in the lock. The door opened with a gentle click. Inside, a small cat was curled on the mat by the stove. The cat lifted its head, eyes bright, and meowed softly. Arjun smiled, brushed the cat’s fur, and placed the key beside the door. The cat stretched, then settled on the mat, purring. The door closed quietly, and the house felt warm and welcoming again.\"}"
+        }
+      ],
+      "result": {
+        "title": "A Quiet Welcome",
+        "story": "A soft evening settled over a quiet neighbourhood in Pune. Arjun walked past the narrow lane where his old neighbour’s house stood. He had forgotten his key in the kitchen, and the door was locked. He reached into his pocket, pulled out the small brass key, and turned it in the lock. The door opened with a gentle click. Inside, a small cat was curled on the mat by the stove. The cat lifted its head, eyes bright, and meowed softly. Arjun smiled, brushed the cat’s fur, and placed the key beside the door. The cat stretched, then settled on the mat, purring. The door closed quietly, and the house felt warm and welcoming again.",
+        "wordCount": 115,
+        "structuralProblems": []
+      },
+      "humanReview": null
+    },
+    {
+      "id": "3-funny",
+      "payload": {
+        "objectIds": [
+          "key",
+          "door",
+          "cat"
+        ],
+        "mood": "funny",
+        "recentOpenings": []
+      },
+      "elapsedMs": 395,
+      "calls": [
+        {
+          "status": 200,
+          "elapsedMs": 394,
+          "responseFormat": "json_schema",
+          "repair": false,
+          "usage": {
+            "promptTokens": 944,
+            "completionTokens": 201,
+            "totalTokens": 1145,
+            "reasoningTokens": 11,
+            "queueTime": 0.082536517,
+            "promptTime": 0.049388821,
+            "completionTime": 0.228804943,
+            "totalTime": 0.278193764
+          },
+          "content": "{\"title\":\"Key Mix‑Up in Pune\",\"story\":\"In a Pune neighbourhood flat, Meera had just finished her chai when she realized her apartment key was missing. She searched the living room, the kitchen, even the small balcony. The only thing she found was a curious cat perched on the door frame, tail twitching. Meera sighed, pulled the key from her pocket, and unlocked the door. The cat darted inside, chased a stray ball of yarn, and disappeared behind the couch. Meera followed, only to find the key she had been looking for stuck in the cat’s mouth, clinging to its whiskers. She laughed, pulled the key free, and the cat meowed as if saying, “I was just guarding it!” The door swung open, and Meera’s neighbour, who had been watching, joined in the giggle.\\n\"}"
+        }
+      ],
+      "result": {
+        "title": "Key Mix‑Up in Pune",
+        "story": "In a Pune neighbourhood flat, Meera had just finished her chai when she realized her apartment key was missing. She searched the living room, the kitchen, even the small balcony. The only thing she found was a curious cat perched on the door frame, tail twitching. Meera sighed, pulled the key from her pocket, and unlocked the door. The cat darted inside, chased a stray ball of yarn, and disappeared behind the couch. Meera followed, only to find the key she had been looking for stuck in the cat’s mouth, clinging to its whiskers. She laughed, pulled the key free, and the cat meowed as if saying, “I was just guarding it!” The door swung open, and Meera’s neighbour, who had been watching, joined in the giggle.\n",
+        "wordCount": 127,
+        "structuralProblems": []
+      },
+      "humanReview": null
+    },
+    {
+      "id": "3-mystery",
+      "payload": {
+        "objectIds": [
+          "key",
+          "door",
+          "cat"
+        ],
+        "mood": "mystery",
+        "recentOpenings": []
+      },
+      "elapsedMs": 445,
+      "calls": [
+        {
+          "status": 200,
+          "elapsedMs": 444,
+          "responseFormat": "json_schema",
+          "repair": false,
+          "usage": {
+            "promptTokens": 948,
+            "completionTokens": 203,
+            "totalTokens": 1151,
+            "reasoningTokens": 20,
+            "queueTime": 0.082002885,
+            "promptTime": 0.10286806,
+            "completionTime": 0.221703018,
+            "totalTime": 0.324571078
+          },
+          "content": "{\"title\":\"Missing Key Mystery\",\"story\":\"In a quiet Pune neighbourhood, Rohan heard a faint scratching at his front door. He opened it and saw a small cat, its tail flicking, sitting on the threshold. Rohan was surprised – the cat had never been in the house before. On the doorstep lay a single, shiny key. He picked it up, wondering who left it. The cat darted away, pausing to stare at the key as if it held a secret. Rohan followed, and the cat led him to the old stone wall behind the garden. There, hidden under a loose brick, was a tiny wooden box. Inside was a note: \\\"The key opens the door to your own curiosity.\\\" Rohan laughed, realizing the cat had found the key and left it as a clue to his own mystery.\"}"
+        }
+      ],
+      "result": {
+        "title": "Missing Key Mystery",
+        "story": "In a quiet Pune neighbourhood, Rohan heard a faint scratching at his front door. He opened it and saw a small cat, its tail flicking, sitting on the threshold. Rohan was surprised – the cat had never been in the house before. On the doorstep lay a single, shiny key. He picked it up, wondering who left it. The cat darted away, pausing to stare at the key as if it held a secret. Rohan followed, and the cat led him to the old stone wall behind the garden. There, hidden under a loose brick, was a tiny wooden box. Inside was a note: \"The key opens the door to your own curiosity.\" Rohan laughed, realizing the cat had found the key and left it as a clue to his own mystery.",
+        "wordCount": 132,
+        "structuralProblems": []
+      },
+      "humanReview": null
+    },
+    {
+      "id": "5-calm",
+      "payload": {
+        "objectIds": [
+          "umbrella",
+          "letter",
+          "bicycle",
+          "cake",
+          "dog"
+        ],
+        "mood": "calm",
+        "recentOpenings": []
+      },
+      "elapsedMs": 415,
+      "calls": [
+        {
+          "status": 200,
+          "elapsedMs": 414,
+          "responseFormat": "json_schema",
+          "repair": false,
+          "usage": {
+            "promptTokens": 946,
+            "completionTokens": 193,
+            "totalTokens": 1139,
+            "reasoningTokens": 11,
+            "queueTime": 0.111029374,
+            "promptTime": 0.054695232,
+            "completionTime": 0.215701251,
+            "totalTime": 0.270396483
+          },
+          "content": "{\"title\":\"Umbrella in the Courtyard\",\"story\":\"A rain‑slick umbrella lay beside the gate of a narrow Pune neighbourhood courtyard. Neha, who had just finished a long shift, slipped inside, carrying a folded letter and a small bicycle she had borrowed from her neighbour. The letter, addressed to her, was from her sister who lived in Mumbai. As she set the bike on the worn path, a golden‑faced dog trotted up, sniffing the wet ground. Neha laughed softly and opened the umbrella, placing it on the stone. The dog nudged the umbrella with its nose, then settled beside it. She unfolded the letter, read the warm words, and placed a slice of freshly baked cake on a chipped plate. The dog wagged its tail, and Neha felt the quiet welcome of home.\"}"
+        }
+      ],
+      "result": {
+        "title": "Umbrella in the Courtyard",
+        "story": "A rain‑slick umbrella lay beside the gate of a narrow Pune neighbourhood courtyard. Neha, who had just finished a long shift, slipped inside, carrying a folded letter and a small bicycle she had borrowed from her neighbour. The letter, addressed to her, was from her sister who lived in Mumbai. As she set the bike on the worn path, a golden‑faced dog trotted up, sniffing the wet ground. Neha laughed softly and opened the umbrella, placing it on the stone. The dog nudged the umbrella with its nose, then settled beside it. She unfolded the letter, read the warm words, and placed a slice of freshly baked cake on a chipped plate. The dog wagged its tail, and Neha felt the quiet welcome of home.",
+        "wordCount": 125,
+        "structuralProblems": []
+      },
+      "humanReview": null
+    },
+    {
+      "id": "5-funny",
+      "payload": {
+        "objectIds": [
+          "umbrella",
+          "letter",
+          "bicycle",
+          "cake",
+          "dog"
+        ],
+        "mood": "funny",
+        "recentOpenings": []
+      },
+      "elapsedMs": 1049,
+      "calls": [
+        {
+          "status": 200,
+          "elapsedMs": 541,
+          "responseFormat": "json_schema",
+          "repair": false,
+          "usage": {
+            "promptTokens": 948,
+            "completionTokens": 249,
+            "totalTokens": 1197,
+            "reasoningTokens": 19,
+            "queueTime": 0.172096908,
+            "promptTime": 0.062658959,
+            "completionTime": 0.273539676,
+            "totalTime": 0.336198635
+          },
+          "content": "{\"title\":\"Pune Umbrella Mishap\",\"story\":\"In a Pune neighbourhood flat, Arjun was waiting for a delivery. He held his umbrella against the door, the only thing that could keep the rain out. A neighbour’s letter slipped from a mailbox and landed on the umbrella’s handle. Arjun laughed, thinking it was a joke, and set the letter aside. Suddenly a bicycle rolled by, its rider waving. The rider, a young girl, pointed at Arjun’s umbrella and said, \\\"Your umbrella is bigger than my bike!\\\" Arjun smiled and offered her the umbrella to keep her dry. She accepted, but the umbrella was so large that it slipped off his hand and landed in the neighbour’s garden. The neighbour ran out, grabbed the umbrella, and shouted, \\\"Hey, I ordered a cake!\\\" The girl, confused, handed Arjun a cake, and they all laughed as the dog ran in, wagging its tail, and knocked the cake into the neighbour’s mailbox. The dog’s tail was the real hero of the day.\"}"
+        },
+        {
+          "status": 200,
+          "elapsedMs": 505,
+          "responseFormat": "json_schema",
+          "repair": true,
+          "usage": {
+            "promptTokens": 1227,
+            "completionTokens": 235,
+            "totalTokens": 1462,
+            "reasoningTokens": 33,
+            "queueTime": 0.111271472,
+            "promptTime": 0.065196396,
+            "completionTime": 0.276268044,
+            "totalTime": 0.34146444
+          },
+          "content": "{\"title\":\"Pune Umbrella Mishap\",\"story\":\"In a Pune neighbourhood flat, Arjun waited for a delivery. He held his umbrella against the door to keep rain out. A neighbour’s letter slipped from a mailbox and landed on the umbrella’s handle. Arjun laughed and set the letter aside. A bicycle rolled by, its rider waving. The rider, a young girl, pointed at Arjun’s umbrella and said, \\\"Your umbrella is bigger than my bike!\\\" Arjun offered her the umbrella to keep her dry. She accepted, but the umbrella slipped from his hand and landed in the neighbour’s garden. The neighbour ran out, grabbed the umbrella, and shouted, \\\"I ordered a cake!\\\" The girl, confused, handed Arjun a cake. They all laughed as the dog ran in, wagging its tail, and knocked the cake into the neighbour’s mailbox. The dog’s tail was the real hero of the day.\"}"
+        }
+      ],
+      "result": {
+        "title": "Pune Umbrella Mishap",
+        "story": "In a Pune neighbourhood flat, Arjun waited for a delivery. He held his umbrella against the door to keep rain out. A neighbour’s letter slipped from a mailbox and landed on the umbrella’s handle. Arjun laughed and set the letter aside. A bicycle rolled by, its rider waving. The rider, a young girl, pointed at Arjun’s umbrella and said, \"Your umbrella is bigger than my bike!\" Arjun offered her the umbrella to keep her dry. She accepted, but the umbrella slipped from his hand and landed in the neighbour’s garden. The neighbour ran out, grabbed the umbrella, and shouted, \"I ordered a cake!\" The girl, confused, handed Arjun a cake. They all laughed as the dog ran in, wagging its tail, and knocked the cake into the neighbour’s mailbox. The dog’s tail was the real hero of the day.",
+        "wordCount": 139,
+        "structuralProblems": []
+      },
+      "humanReview": null
+    },
+    {
+      "id": "5-mystery",
+      "payload": {
+        "objectIds": [
+          "umbrella",
+          "letter",
+          "bicycle",
+          "cake",
+          "dog"
+        ],
+        "mood": "mystery",
+        "recentOpenings": []
+      },
+      "elapsedMs": 419,
+      "calls": [
+        {
+          "status": 400,
+          "elapsedMs": 418,
+          "responseFormat": "json_schema",
+          "repair": false
+        }
+      ],
+      "result": {
+        "error": "PROVIDER_REFUSED"
+      },
+      "humanReview": null
+    },
+    {
+      "id": "10-calm",
+      "payload": {
+        "objectIds": [
+          "rocket",
+          "magic-wand",
+          "crown",
+          "snowflake",
+          "fish",
+          "train",
+          "phone",
+          "key",
+          "cake",
+          "umbrella"
+        ],
+        "mood": "calm",
+        "recentOpenings": []
+      },
+      "elapsedMs": 29,
+      "calls": [
+        {
+          "status": 429,
+          "elapsedMs": 29,
+          "responseFormat": "json_schema",
+          "repair": false
+        }
+      ],
+      "result": {
+        "error": "RATE_LIMITED"
+      },
+      "humanReview": null
+    },
+    {
+      "id": "10-funny",
+      "payload": {
+        "objectIds": [
+          "rocket",
+          "magic-wand",
+          "crown",
+          "snowflake",
+          "fish",
+          "train",
+          "phone",
+          "key",
+          "cake",
+          "umbrella"
+        ],
+        "mood": "funny",
+        "recentOpenings": []
+      },
+      "elapsedMs": 29,
+      "calls": [
+        {
+          "status": 429,
+          "elapsedMs": 29,
+          "responseFormat": "json_schema",
+          "repair": false
+        }
+      ],
+      "result": {
+        "error": "RATE_LIMITED"
+      },
+      "humanReview": null
+    },
+    {
+      "id": "10-mystery",
+      "payload": {
+        "objectIds": [
+          "rocket",
+          "magic-wand",
+          "crown",
+          "snowflake",
+          "fish",
+          "train",
+          "phone",
+          "key",
+          "cake",
+          "umbrella"
+        ],
+        "mood": "mystery",
+        "recentOpenings": []
+      },
+      "elapsedMs": 31,
+      "calls": [
+        {
+          "status": 429,
+          "elapsedMs": 30,
+          "responseFormat": "json_schema",
+          "repair": false
+        }
+      ],
+      "result": {
+        "error": "RATE_LIMITED"
+      },
+      "humanReview": null
+    }
+  ]
+}

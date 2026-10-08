@@ -1,0 +1,252 @@
+{
+  "recordedAt": "2026-10-08T03:14:30.070Z",
+  "model": "openai/gpt-oss-20b",
+  "label": "baseline-retry",
+  "systemPrompt": "Write a short, complete fictional story for spoken narration. Aim for 120–135 words, excluding the title; 100–150 words is required. Use the extra space for a believable situation, a small complication, and an earned ending, not filler. Set every story in an everyday Indian backdrop. Use one clear, believable detail from daily life in India, such as a neighbourhood flat, a school courtyard, a local bus stop, a market lane, a coastal town, or a hill town. Use Indian names when a named person is needed. India includes modern cities, small towns, and villages; vary the setting and do not rely on stereotypes, accents, poverty, religion, or festivals to make it Indian. Write in simple, natural English that is easy to understand when heard once. Prefer common words, short sentences, and clear actions. Use complete, grammatical sentences with natural articles. Keep dialogue brief and conversational. Avoid fancy vocabulary, flowery descriptions, obscure idioms, abstract symbolism, poetic metaphors, and unexplained Hindi or other regional-language words. Keep English-only narration. Say 'the rain stopped' rather than 'the clouds surrendered their sorrow'. Do not make streets hum, rain forget, or objects symbolise feelings. Include every selected object naturally, using its label or a close variant. Let two or three objects drive the action and the rest support it; do not merely list them. Keep events realistic and interesting. Objects should behave like normal objects and animals like normal animals. An unusual selected object can be a toy, a picture, a stage prop, or something a person talks about when that makes sense. Do not make animals write letters or add unexplained magic. Mention the chosen Indian location clearly. Give the story a concrete situation, a change, and a satisfying final beat. Keep the cause and effect easy to follow. Calm is warm and unhurried, with a small helpful action rather than atmospheric description. Funny lands a specific comic payoff caused by an action or misunderstanding, not merely someone laughing. Mystery has a curious reveal without horror; introduce one clear question early, then explain that same question in the ending instead of ending with a confusing poetic image or an unrelated discovery. Avoid moral lessons, inspirational endings, 'Once upon a time', preambles, hashtags, and explaining how the story was written. Do not explain the joke or label the story structure with phrases such as 'The reversal', 'The twist', or 'The moral'. Show what happened and end with an action or brief dialogue. Introduce few extra props. No explicit sexual content, graphic violence, hateful content, or dangerous instructions. Return only the requested JSON with a simple title of at most eight words and the story.",
+  "controls": {
+    "choiceIndex": 0,
+    "temperature": 0.7,
+    "timeoutMs": 20000,
+    "maxRepair": 1,
+    "caseIds": [
+      "5-mystery",
+      "10-calm",
+      "10-funny",
+      "10-mystery"
+    ],
+    "pacingMs": 15000
+  },
+  "rubric": {
+    "plainEnglish": "0: hard to follow aloud; 1: minor awkward/abstract phrases; 2: simple, grammatical actions understood on one hearing.",
+    "indianBackdrop": "0: absent/stereotyped; 1: named Indian place only; 2: ordinary Indian setting integrated into the action without stereotypes.",
+    "causeEffect": "0: impossible/contradictory or unexplained event; 1: plausible but a causal gap or unearned ending; 2: setup, change and ending form a believable chain.",
+    "objectUse": "0: list or forced/impossible uses; 1: all mentioned but some decorative/contrived; 2: two or three drive action, others have plausible supporting roles.",
+    "moodPayoff": "0: absent, or mystery answers a different question; 1: recognisable mood but weak ending; 2: helpful calm action, action-caused comic payoff, or evidence resolving the original mystery."
+  },
+  "samples": [
+    {
+      "id": "5-mystery",
+      "payload": {
+        "objectIds": [
+          "umbrella",
+          "letter",
+          "bicycle",
+          "cake",
+          "dog"
+        ],
+        "mood": "mystery",
+        "recentOpenings": []
+      },
+      "elapsedMs": 486,
+      "calls": [
+        {
+          "status": 200,
+          "elapsedMs": 481,
+          "responseFormat": "json_schema",
+          "repair": false,
+          "usage": {
+            "promptTokens": 952,
+            "completionTokens": 204,
+            "totalTokens": 1156,
+            "reasoningTokens": 20,
+            "queueTime": 0.052568371,
+            "promptTime": 0.064196437,
+            "completionTime": 0.258345842,
+            "totalTime": 0.322542279
+          },
+          "content": "{\"title\":\"Umbrella Mystery\",\"story\":\"In a quiet Pune neighbourhood, Ravi’s bicycle sat beside the street lamp, its chain loose after a sudden rain. He had left a cake on the balcony for his neighbour’s daughter, but it was gone when he returned. A small, white dog trotted past, sniffing the air. Ravi noticed an umbrella on the pavement, its handle cracked and a folded letter tucked inside. He unfolded the paper: a single line, \\\"Find the missing cake at the bakery, tomorrow.\\\" Confused, he looked around. The bakery’s sign was bright, but the door was locked. He heard a faint bark from the street. The dog ran into the alley, coming back with a small bag of fresh cake crumbs. Ravi laughed; the dog had hidden the cake to protect it from a stray cat.\\n\"}"
+        }
+      ],
+      "result": {
+        "title": "Umbrella Mystery",
+        "story": "In a quiet Pune neighbourhood, Ravi’s bicycle sat beside the street lamp, its chain loose after a sudden rain. He had left a cake on the balcony for his neighbour’s daughter, but it was gone when he returned. A small, white dog trotted past, sniffing the air. Ravi noticed an umbrella on the pavement, its handle cracked and a folded letter tucked inside. He unfolded the paper: a single line, \"Find the missing cake at the bakery, tomorrow.\" Confused, he looked around. The bakery’s sign was bright, but the door was locked. He heard a faint bark from the street. The dog ran into the alley, coming back with a small bag of fresh cake crumbs. Ravi laughed; the dog had hidden the cake to protect it from a stray cat.\n",
+        "wordCount": 131,
+        "structuralProblems": []
+      },
+      "humanReview": null
+    },
+    {
+      "id": "10-calm",
+      "payload": {
+        "objectIds": [
+          "rocket",
+          "magic-wand",
+          "crown",
+          "snowflake",
+          "fish",
+          "train",
+          "phone",
+          "key",
+          "cake",
+          "umbrella"
+        ],
+        "mood": "calm",
+        "recentOpenings": []
+      },
+      "elapsedMs": 981,
+      "calls": [
+        {
+          "status": 200,
+          "elapsedMs": 499,
+          "responseFormat": "json_schema",
+          "repair": false,
+          "usage": {
+            "promptTokens": 958,
+            "completionTokens": 224,
+            "totalTokens": 1182,
+            "reasoningTokens": 23,
+            "queueTime": 0.111460152,
+            "promptTime": 0.058003065,
+            "completionTime": 0.269020338,
+            "totalTime": 0.327023403
+          },
+          "content": "{\"title\":\"Rocket in the Garden\",\"story\":\"In a quiet corner of a Pune neighbourhood, Ravi sat on the tiled porch with a small toy rocket beside him. He had built it from a cardboard tube, a bottle cap, and a strip of plastic. The rocket was the centre of his afternoon. Nearby, a phone lay on a wooden stool, its screen still on. He pressed the button, and the call from his sister answered, asking if he could bring the cake for the neighbour’s birthday. Ravi nodded and slipped a key into the pocket of his jacket. He then lifted the rocket, pointing it at the sky, and whispered, “Let’s fly.” The wind blew a snowflake from a nearby plant, landing on the rocket’s top. The train whistle from the station faded into the distance. With a quiet smile, Ravi lifted the rocket again, and the neighbour’s door opened, a warm welcome waiting inside. \"}"
+        },
+        {
+          "status": 200,
+          "elapsedMs": 479,
+          "responseFormat": "json_schema",
+          "repair": true,
+          "usage": {
+            "promptTokens": 1213,
+            "completionTokens": 251,
+            "totalTokens": 1464,
+            "reasoningTokens": 30,
+            "queueTime": 0.110629516,
+            "promptTime": 0.073260801,
+            "completionTime": 0.259535743,
+            "totalTime": 0.332796544
+          },
+          "content": "{\"title\":\"Rocket in the Garden\",\"story\":\"In a quiet corner of a Pune neighbourhood, Ravi sat on the tiled porch with a small toy rocket beside him. He had built it from a cardboard tube, a bottle cap, and a strip of plastic. The rocket was the centre of his afternoon. Nearby, a phone lay on a wooden stool, its screen still on. He pressed the button, and the call from his sister answered, asking if he could bring the cake for the neighbour’s birthday. Ravi nodded and slipped a key into the pocket of his jacket. He then lifted the rocket, pointing it at the sky, and whispered, “Let’s fly.” A fish swam in a small bowl, its scales catching the light. An umbrella, half‑open, leaned against the wall. A snowflake from a nearby plant landed on the rocket’s top. The train whistle from the station faded into the distance. With a quiet smile, Ravi lifted the rocket again, and the neighbour’s door opened, a warm welcome waiting inside.\"}"
+        }
+      ],
+      "result": {
+        "error": "STORY_INVALID"
+      },
+      "humanReview": null
+    },
+    {
+      "id": "10-funny",
+      "payload": {
+        "objectIds": [
+          "rocket",
+          "magic-wand",
+          "crown",
+          "snowflake",
+          "fish",
+          "train",
+          "phone",
+          "key",
+          "cake",
+          "umbrella"
+        ],
+        "mood": "funny",
+        "recentOpenings": []
+      },
+      "elapsedMs": 1116,
+      "calls": [
+        {
+          "status": 200,
+          "elapsedMs": 569,
+          "responseFormat": "json_schema",
+          "repair": false,
+          "usage": {
+            "promptTokens": 960,
+            "completionTokens": 237,
+            "totalTokens": 1197,
+            "reasoningTokens": 30,
+            "queueTime": 0.169950105,
+            "promptTime": 0.049981408,
+            "completionTime": 0.283809565,
+            "totalTime": 0.333790973
+          },
+          "content": "{\"title\":\"Pune Rocket Mishap\",\"story\":\"In a Pune neighbourhood, Anil was fixing a small model rocket in his courtyard. He held a magic wand he’d found in a toy shop, pretending to give the rocket power. The next day, the school bus train whistle blew and a snowflake fell from a broken window, landing on the rocket’s nose. Anil laughed, grabbed his phone, and called his friend Riya. \\\"The rocket is stuck,\\\" he said, waving a key that might open the launch pad. Riya arrived with a cake, a crown for the rocket’s pilot, and an umbrella to cover the mess. She opened the umbrella, and the rocket, now covered in cake crumbs, flew straight into the school courtyard, landing on Riya’s head. The crowd burst into laughter as the rocket’s crown glittered on her head, and Anil sighed, \\\"Well, that’s one way to launch a cake.\\\"\"}"
+        },
+        {
+          "status": 200,
+          "elapsedMs": 543,
+          "responseFormat": "json_schema",
+          "repair": true,
+          "usage": {
+            "promptTokens": 1213,
+            "completionTokens": 242,
+            "totalTokens": 1455,
+            "reasoningTokens": 26,
+            "queueTime": 0.169577813,
+            "promptTime": 0.082827697,
+            "completionTime": 0.256721924,
+            "totalTime": 0.339549621
+          },
+          "content": "{\"title\":\"Pune Rocket Mishap\",\"story\":\"In a Pune neighbourhood, Anil was fixing a small model rocket in his courtyard. He held a magic wand he’d found in a toy shop, pretending to give the rocket power. A fish from the local pond swam by the fence, splashing water on the rocket. The next day, a snowflake fell from a broken window, landing on the rocket’s nose. Anil laughed, grabbed his phone, and called his friend Riya. \\\"The rocket is stuck,\\\" he said, waving a key that might open the launch pad. Riya arrived with a cake, a crown for the rocket’s pilot, and an umbrella to cover the mess. She opened the umbrella, and the rocket, now covered in cake crumbs, flew straight into the school courtyard, landing on Riya’s head. The crowd burst into laughter as the rocket’s crown glittered on her head, and Anil sighed, \\\"Well, that’s one way to launch a cake.\\\"\"}"
+        }
+      ],
+      "result": {
+        "error": "STORY_INVALID"
+      },
+      "humanReview": null
+    },
+    {
+      "id": "10-mystery",
+      "payload": {
+        "objectIds": [
+          "rocket",
+          "magic-wand",
+          "crown",
+          "snowflake",
+          "fish",
+          "train",
+          "phone",
+          "key",
+          "cake",
+          "umbrella"
+        ],
+        "mood": "mystery",
+        "recentOpenings": []
+      },
+      "elapsedMs": 702,
+      "calls": [
+        {
+          "status": 200,
+          "elapsedMs": 357,
+          "responseFormat": "json_schema",
+          "repair": false,
+          "usage": {
+            "promptTokens": 964,
+            "completionTokens": 212,
+            "totalTokens": 1176,
+            "reasoningTokens": 26,
+            "queueTime": 0.02277773,
+            "promptTime": 0.047880318,
+            "completionTime": 0.232495526,
+            "totalTime": 0.280375844
+          },
+          "content": "{\"title\":\"Rocket in Pune\",\"story\":\"In a quiet Pune neighbourhood, a young boy named Arjun found an old rocket tucked beside his phone on the kitchen table. The rocket was dusty, its paint faded, and a small key was glued to its side. He wondered why it was there. Arjun tried to lift it, but the rocket was heavy. He remembered the train that passed every morning and the snowflake he had seen in a newspaper. He used his magic wand, pretending to be a wizard, and whispered a spell. The key slid free and fell into his hand. He pressed the rocket’s button, and it lifted, humming softly. When it landed, a cake appeared under the umbrella, and the train’s whistle echoed. The mystery was solved: the rocket was a toy that had been misplaced by a neighbour who loved surprises.\\n\"}"
+        },
+        {
+          "status": 200,
+          "elapsedMs": 342,
+          "responseFormat": "json_schema",
+          "repair": true,
+          "usage": {
+            "promptTokens": 1198,
+            "completionTokens": 212,
+            "totalTokens": 1410,
+            "reasoningTokens": 20,
+            "queueTime": 0.022472892,
+            "promptTime": 0.063445236,
+            "completionTime": 0.221984222,
+            "totalTime": 0.285429458
+          },
+          "content": "{\"title\":\"Rocket in Pune\",\"story\":\"In a quiet Pune neighbourhood, a young boy named Arjun found an old rocket beside his phone on the kitchen table. The rocket was dusty, its paint faded, and a small key was glued to its side. He wondered why it was there. Arjun tried to lift it, but the rocket was heavy. He remembered the train that passed every morning and the snowflake he had seen in a newspaper. He also saw a fish in the courtyard pond and a crown on a neighbour’s shelf. Using his magic wand, he whispered a spell. The key slid free and fell into his hand. He pressed the rocket’s button, and it lifted, humming softly. When it landed, a cake appeared under the umbrella, and the train’s whistle echoed. The mystery was solved: the rocket was a toy that had been misplaced by a neighbour who loved surprises.\"}"
+        }
+      ],
+      "result": {
+        "title": "Rocket in Pune",
+        "story": "In a quiet Pune neighbourhood, a young boy named Arjun found an old rocket beside his phone on the kitchen table. The rocket was dusty, its paint faded, and a small key was glued to its side. He wondered why it was there. Arjun tried to lift it, but the rocket was heavy. He remembered the train that passed every morning and the snowflake he had seen in a newspaper. He also saw a fish in the courtyard pond and a crown on a neighbour’s shelf. Using his magic wand, he whispered a spell. The key slid free and fell into his hand. He pressed the rocket’s button, and it lifted, humming softly. When it landed, a cake appeared under the umbrella, and the train’s whistle echoed. The mystery was solved: the rocket was a toy that had been misplaced by a neighbour who loved surprises.",
+        "wordCount": 146,
+        "structuralProblems": []
+      },
+      "humanReview": null
+    }
+  ]
+}

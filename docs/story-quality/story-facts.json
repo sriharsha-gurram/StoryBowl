@@ -1,0 +1,442 @@
+{
+  "recordedAt": "2026-10-08T03:24:20.908Z",
+  "model": "openai/gpt-oss-20b",
+  "label": "story-facts",
+  "systemPrompt": "Write a complete story for spoken narration in simple, natural English. Aim for 120–130 words; 100–150 words is required, excluding the title and storyFacts. Keep English-only narration. Use an everyday Indian backdrop: the requested place and an ordinary local interaction. No stereotypes. Keep events realistic and interesting. Return JSON with storyFacts FIRST, then title (at most eight words), then story. storyFacts are brief concrete fictional facts, not writing advice: situation, the actual cause of the problem, its resolution, and each object's ordinary role. Write the story using those same facts. Do not invent a different explanation at the end. Use one small situation and at most two main people. Include every selected object by its label or a close variant. Two or three objects drive actions; the others support that situation. Follow the ordinary representations supplied in the request. Animals never write, deliver messages intentionally or plan surprises. No magic or impossible movements. Track where keys and people are; never repeat an entrance after someone is already inside. Calm: a person does a small helpful action with a visible result. Funny: one mistaken assumption produces a specific comic consequence; reveal the mistake. Mystery: ask one concrete question early, show a physical clue, then say who or what caused that same event and how. Use a human action or simple physical cause, not coincidence or a symbolic secret. Use common words, short grammatical sentences and brief dialogue. No poetic descriptions, morals, inspirational speeches, preambles or explanations of how you wrote the story. End with an action or dialogue. No explicit sexual content, graphic violence, hateful content or dangerous instructions.",
+  "controls": {
+    "choiceIndex": 0,
+    "temperature": 0.7,
+    "timeoutMs": 20000,
+    "maxRepair": 1,
+    "caseIds": [
+      "3-calm",
+      "3-funny",
+      "3-mystery",
+      "5-calm",
+      "5-funny",
+      "5-mystery",
+      "10-calm",
+      "10-funny",
+      "10-mystery"
+    ],
+    "pacingMs": 15000
+  },
+  "rubric": {
+    "plainEnglish": "0: hard to follow aloud; 1: minor awkward/abstract phrases; 2: simple, grammatical actions understood on one hearing.",
+    "indianBackdrop": "0: absent/stereotyped; 1: named Indian place only; 2: ordinary Indian setting integrated into the action without stereotypes.",
+    "causeEffect": "0: impossible/contradictory or unexplained event; 1: plausible but a causal gap or unearned ending; 2: setup, change and ending form a believable chain.",
+    "objectUse": "0: list or forced/impossible uses; 1: all mentioned but some decorative/contrived; 2: two or three drive action, others have plausible supporting roles.",
+    "moodPayoff": "0: absent, or mystery answers a different question; 1: recognisable mood but weak ending; 2: helpful calm action, action-caused comic payoff, or evidence resolving the original mystery."
+  },
+  "samples": [
+    {
+      "id": "3-calm",
+      "payload": {
+        "objectIds": [
+          "key",
+          "door",
+          "cat"
+        ],
+        "mood": "calm",
+        "recentOpenings": []
+      },
+      "elapsedMs": 947,
+      "calls": [
+        {
+          "status": 200,
+          "elapsedMs": 573,
+          "responseFormat": "json_schema",
+          "repair": false,
+          "usage": {
+            "promptTokens": 829,
+            "completionTokens": 264,
+            "totalTokens": 1093,
+            "reasoningTokens": 50,
+            "queueTime": 0.055758351,
+            "promptTime": 0.056853113,
+            "completionTime": 0.288538923,
+            "totalTime": 0.345392036
+          },
+          "content": "{\"title\":\"Key to a Quiet Home\",\"storyFacts\":{\"situation\":\"A cat is stuck outside the house\",\"cause\":\"The door was locked with a key\",\"resolution\":\"The key is used to unlock the door and the cat enters peacefully\",\"objectRoles\":{\"cat\":\"the animal that needs to get inside\",\"door\":\"the entrance that was locked\",\"key\":\"the tool used to unlock the door\"}},\"story\":\"In a quiet Pune neighbourhood, Ramesh was finishing a long day at work. He walked to his apartment, key in hand, and turned the lock. The door was closed, and a small tabby cat sat on the doorstep, meowing softly. Ramesh remembered the key left in the kitchen. He went back, pulled out the key, and turned it in the lock. The door opened with a gentle click. The cat slipped inside, purring, and settled on the sofa. Ramesh smiled, set the key on the table, and said quietly, \\\"Welcome home.\\\"\"}"
+        },
+        {
+          "status": 200,
+          "elapsedMs": 367,
+          "responseFormat": "json_schema",
+          "repair": true,
+          "usage": {
+            "promptTokens": 1114,
+            "completionTokens": 232,
+            "totalTokens": 1346,
+            "reasoningTokens": 17,
+            "queueTime": 0.03561718,
+            "promptTime": 0.065167358,
+            "completionTime": 0.2339118,
+            "totalTime": 0.299079158
+          },
+          "content": "{\"title\":\"Key to a Quiet Home\",\"storyFacts\":{\"situation\":\"A cat is stuck outside the house\",\"cause\":\"The door was locked with a key\",\"resolution\":\"The key is used to unlock the door and the cat enters peacefully\",\"objectRoles\":{\"cat\":\"the animal that needs to get inside\",\"door\":\"the entrance that was locked\",\"key\":\"the tool used to unlock the door\"}},\"story\":\"In a quiet Pune neighbourhood, Ramesh finished a long day at work and walked to his apartment. He held the key in his hand and turned the lock. The door stayed shut, and a small tabby cat sat on the doorstep, meowing softly. Ramesh remembered the key left on the kitchen counter. He went back, picked it up, and turned it in the lock. The door opened with a gentle click. The cat slipped inside, purring, and settled on the sofa. Ramesh smiled, set the key on the table, and said quietly, \\\"Welcome home.\\\"\"}"
+        }
+      ],
+      "result": {
+        "error": "STORY_INVALID"
+      },
+      "humanReview": null
+    },
+    {
+      "id": "3-funny",
+      "payload": {
+        "objectIds": [
+          "key",
+          "door",
+          "cat"
+        ],
+        "mood": "funny",
+        "recentOpenings": []
+      },
+      "elapsedMs": 476,
+      "calls": [
+        {
+          "status": 200,
+          "elapsedMs": 474,
+          "responseFormat": "json_schema",
+          "repair": false,
+          "usage": {
+            "promptTokens": 831,
+            "completionTokens": 289,
+            "totalTokens": 1120,
+            "reasoningTokens": 15,
+            "queueTime": 0.057361069,
+            "promptTime": 0.048574379,
+            "completionTime": 0.315579244,
+            "totalTime": 0.364153623
+          },
+          "content": "{\"story\":\"In a quiet Pune lane, a neighbour’s door is locked. A cat, curious, has slipped inside the kitchen. The owner, Mr. Patil, forgets the key on the counter. He returns, sees the door still closed, and fumbles for the key. Meanwhile, the cat, hearing the rustle, darts out the open window, tail high. Mr. Patil, thinking the cat is inside, runs to the door, opens it with the key, and steps out. The cat, spotting Mr. Patil, hops onto the doorstep, purrs, and then—just as Mr. Patil reaches for the key—drops it. He looks up, sees the cat holding the key in its mouth, and laughs, saying, “So that’s how you lock the door!”\",\"storyFacts\":{\"cause\":\"The key was left on the counter, forgotten\",\"objectRoles\":{\"cat\":\"inside the house, then outside\",\"door\":\"locked, then opened by the key\",\"key\":\"used to open the door, but misplaced\"},\"resolution\":\"The cat runs out, causing a funny mix‑up\",\"situation\":\"A neighbour’s door is locked and a cat is inside\"},\"title\":\"The Locked Door Mix‑up\"}\n"
+        }
+      ],
+      "result": {
+        "title": "The Locked Door Mix‑up",
+        "story": "In a quiet Pune lane, a neighbour’s door is locked. A cat, curious, has slipped inside the kitchen. The owner, Mr. Patil, forgets the key on the counter. He returns, sees the door still closed, and fumbles for the key. Meanwhile, the cat, hearing the rustle, darts out the open window, tail high. Mr. Patil, thinking the cat is inside, runs to the door, opens it with the key, and steps out. The cat, spotting Mr. Patil, hops onto the doorstep, purrs, and then—just as Mr. Patil reaches for the key—drops it. He looks up, sees the cat holding the key in its mouth, and laughs, saying, “So that’s how you lock the door!”",
+        "wordCount": 114,
+        "structuralProblems": []
+      },
+      "humanReview": null
+    },
+    {
+      "id": "3-mystery",
+      "payload": {
+        "objectIds": [
+          "key",
+          "door",
+          "cat"
+        ],
+        "mood": "mystery",
+        "recentOpenings": []
+      },
+      "elapsedMs": 610,
+      "calls": [
+        {
+          "status": 200,
+          "elapsedMs": 609,
+          "responseFormat": "json_schema",
+          "repair": false,
+          "usage": {
+            "promptTokens": 835,
+            "completionTokens": 297,
+            "totalTokens": 1132,
+            "reasoningTokens": 27,
+            "queueTime": 0.168527326,
+            "promptTime": 0.051671466,
+            "completionTime": 0.317496073,
+            "totalTime": 0.369167539
+          },
+          "content": "{\"storyFacts\":{\"situation\":\"Asha opens a closed door in her Pune flat to find a key on the floor.\",\"cause\":\"The key was left there by a neighbor who had mistakenly dropped it while fixing the door lock.\",\"resolution\":\"Asha discovers the key belonged to the neighbor’s old house, solving the mystery of the misplaced key.\",\"objectRoles\":{\"key\":\"left on the floor, used to open the door\",\"door\":\"closed, then opened by the key\",\"cat\":\"watching, then following Asha\"} },\"title\":\"The Mysterious Key\",\"story\":\"Asha was walking to her flat in Pune when she saw a small key on the doorstep of a neighbour’s apartment. She wondered why it was there. Inside, the door was stuck, and the cat that lived in the hallway was pacing, tail twitching. Asha tried the key on the door and it turned. The door opened to a small room that smelled of old books. The cat darted in, then stayed by the window. Asha looked at the key, then at the cat. She realized the key was for the neighbour’s old house, and the cat had followed the neighbour’s footsteps. The mystery was solved by a simple drop of a key and a curious cat.\"}"
+        }
+      ],
+      "result": {
+        "title": "The Mysterious Key",
+        "story": "Asha was walking to her flat in Pune when she saw a small key on the doorstep of a neighbour’s apartment. She wondered why it was there. Inside, the door was stuck, and the cat that lived in the hallway was pacing, tail twitching. Asha tried the key on the door and it turned. The door opened to a small room that smelled of old books. The cat darted in, then stayed by the window. Asha looked at the key, then at the cat. She realized the key was for the neighbour’s old house, and the cat had followed the neighbour’s footsteps. The mystery was solved by a simple drop of a key and a curious cat.",
+        "wordCount": 117,
+        "structuralProblems": []
+      },
+      "humanReview": null
+    },
+    {
+      "id": "5-calm",
+      "payload": {
+        "objectIds": [
+          "umbrella",
+          "letter",
+          "bicycle",
+          "cake",
+          "dog"
+        ],
+        "mood": "calm",
+        "recentOpenings": []
+      },
+      "elapsedMs": 499,
+      "calls": [
+        {
+          "status": 200,
+          "elapsedMs": 498,
+          "responseFormat": "json_schema",
+          "repair": false,
+          "usage": {
+            "promptTokens": 855,
+            "completionTokens": 318,
+            "totalTokens": 1173,
+            "reasoningTokens": 35,
+            "queueTime": 0.045793855,
+            "promptTime": 0.050568903,
+            "completionTime": 0.339683292,
+            "totalTime": 0.390252195
+          },
+          "content": "{\"title\":\"Pune Park Evening\",\"storyFacts\":{\"situation\":\"A quiet evening in a Pune neighbourhood, a man returns home with an umbrella and a letter\",\"cause\":\"The sudden rain starts, and he is caught without a place to dry his bike\",\"resolution\":\"He finds an old umbrella, uses it to dry his bicycle, and the dog brings a cake to share\",\"objectRoles\":{\"umbrella\":\"used to dry the bicycle and keep the letter dry\",\"letter\":\"contains a note from a friend\",\"bicycle\":\"needs drying after the rain\",\"cake\":\"brought by the dog as a gesture of friendship\",\"dog\":\"brings the cake and follows the man home\"}},\"story\":\"In a quiet Pune neighbourhood, Arjun walks home with a wet bicycle, an umbrella, and a letter from his friend. Heavy rain starts, and he finds a shop with a spare umbrella. He sets the umbrella over his bike, keeping the letter dry. A friendly dog, belonging to the shopkeeper, brings a small cake to Arjun. The dog sits beside the bike, wagging its tail. Arjun smiles, thanks the dog, and places the cake on a nearby bench. The umbrella stays open, shielding the bike and the letter. As the sun sets, Arjun steps inside, the dog follows, and the door opens with a quiet welcome.\"}"
+        }
+      ],
+      "result": {
+        "title": "Pune Park Evening",
+        "story": "In a quiet Pune neighbourhood, Arjun walks home with a wet bicycle, an umbrella, and a letter from his friend. Heavy rain starts, and he finds a shop with a spare umbrella. He sets the umbrella over his bike, keeping the letter dry. A friendly dog, belonging to the shopkeeper, brings a small cake to Arjun. The dog sits beside the bike, wagging its tail. Arjun smiles, thanks the dog, and places the cake on a nearby bench. The umbrella stays open, shielding the bike and the letter. As the sun sets, Arjun steps inside, the dog follows, and the door opens with a quiet welcome.",
+        "wordCount": 106,
+        "structuralProblems": []
+      },
+      "humanReview": null
+    },
+    {
+      "id": "5-funny",
+      "payload": {
+        "objectIds": [
+          "umbrella",
+          "letter",
+          "bicycle",
+          "cake",
+          "dog"
+        ],
+        "mood": "funny",
+        "recentOpenings": []
+      },
+      "elapsedMs": 609,
+      "calls": [
+        {
+          "status": 400,
+          "elapsedMs": 607,
+          "responseFormat": "json_schema",
+          "repair": false
+        }
+      ],
+      "result": {
+        "error": "PROVIDER_REFUSED"
+      },
+      "humanReview": null
+    },
+    {
+      "id": "5-mystery",
+      "payload": {
+        "objectIds": [
+          "umbrella",
+          "letter",
+          "bicycle",
+          "cake",
+          "dog"
+        ],
+        "mood": "mystery",
+        "recentOpenings": []
+      },
+      "elapsedMs": 580,
+      "calls": [
+        {
+          "status": 200,
+          "elapsedMs": 578,
+          "responseFormat": "json_schema",
+          "repair": false,
+          "usage": {
+            "promptTokens": 861,
+            "completionTokens": 330,
+            "totalTokens": 1191,
+            "reasoningTokens": 53,
+            "queueTime": 0.082668459,
+            "promptTime": 0.051530139,
+            "completionTime": 0.375573722,
+            "totalTime": 0.427103861
+          },
+          "content": "{\"storyFacts\":{\"situation\":\"In a Pune neighbourhood, a boy finds a letter under an umbrella.\",\"cause\":\"The letter was dropped by a neighbour who forgot it while walking home.\",\"resolution\":\"The boy reads the letter, discovers a clue, and learns who left it.\",\"objectRoles\":{\"umbrella\":\"hidden the letter\",\"letter\":\"contains clue\",\"bicycle\":\"used to chase the dog\",\"cake\":\"gift for the neighbour\",\"dog\":\"leads to the hidden spot\"}},\"title\":\"The Umbrella Letter\",\"story\":\"In a quiet Pune street, Arjun parked his bicycle near the old banyan tree. He noticed a dark umbrella leaning against a wall. Inside, a folded letter lay beneath it. Curiosity sparked, Arjun unfolded the paper. It was a note from Mrs. Rao, the neighbour, saying she had misplaced her diary and asked him to keep it safe. The letter mentioned a sweet cake she would bring later. As Arjun walked to her house, a stray dog tugged at his collar, leading him to a small hollow in the tree. Inside the hollow, he found a small, wrapped cake and the diary. Mrs. Rao had forgotten the diary in the hollow after dropping the umbrella. She had left the letter to explain and thank him, but the dog had already revealed the hidden spot.\"}"
+        }
+      ],
+      "result": {
+        "title": "The Umbrella Letter",
+        "story": "In a quiet Pune street, Arjun parked his bicycle near the old banyan tree. He noticed a dark umbrella leaning against a wall. Inside, a folded letter lay beneath it. Curiosity sparked, Arjun unfolded the paper. It was a note from Mrs. Rao, the neighbour, saying she had misplaced her diary and asked him to keep it safe. The letter mentioned a sweet cake she would bring later. As Arjun walked to her house, a stray dog tugged at his collar, leading him to a small hollow in the tree. Inside the hollow, he found a small, wrapped cake and the diary. Mrs. Rao had forgotten the diary in the hollow after dropping the umbrella. She had left the letter to explain and thank him, but the dog had already revealed the hidden spot.",
+        "wordCount": 134,
+        "structuralProblems": []
+      },
+      "humanReview": null
+    },
+    {
+      "id": "10-calm",
+      "payload": {
+        "objectIds": [
+          "rocket",
+          "magic-wand",
+          "crown",
+          "snowflake",
+          "fish",
+          "train",
+          "phone",
+          "key",
+          "cake",
+          "umbrella"
+        ],
+        "mood": "calm",
+        "recentOpenings": []
+      },
+      "elapsedMs": 1535,
+      "calls": [
+        {
+          "status": 200,
+          "elapsedMs": 843,
+          "responseFormat": "json_schema",
+          "repair": false,
+          "usage": {
+            "promptTokens": 977,
+            "completionTokens": 418,
+            "totalTokens": 1395,
+            "reasoningTokens": 44,
+            "queueTime": 0.168254751,
+            "promptTime": 0.0545229,
+            "completionTime": 0.556236181,
+            "totalTime": 0.610759081
+          },
+          "content": "{\"title\":\"A Cardboard Rocket in the Living Room\",\"storyFacts\":{\"situation\":\"A young boy named Aarav brings his cardboard rocket to his grandmother’s house in Pune\",\"cause\":\"Aarav’s grandmother forgot to turn on the lights before he arrived\",\"resolution\":\"Aarav uses his phone to call the electrician and lights the living room, then shows his grandmother the rocket\",\"objectRoles\":{\"rocket\":\"Aarav’s cardboard rocket model sits on the sofa\",\"magic-wand\":\"A plastic wand is tucked beside the rocket, unused\",\"crown\":\"A paper crown is on a nearby chair\",\"snowflake\":\"A paper snowflake hangs from the ceiling\",\"fish\":\"A small fish in a bowl near the window\",\"train\":\"A toy train rests on a shelf\",\"phone\":\"A smartphone used to call the electrician\",\"key\":\"A brass key sits on the table\",\"cake\":\"A slice of cake is on a plate\",\"umbrella\":\"An umbrella is propped against a wall\"},\"cause\":\"The lights were off when Aarav arrived\",\"resolution\":\"The lights are turned on, and the rocket is displayed\",\"situation\":\"Aarav brings his rocket to his grandmother’s house in Pune\"},\"story\":\"Aarav walks into his grandmother’s living room in Pune, his cardboard rocket resting on the sofa. The room is dark; the lights were forgotten. He pulls out his phone and dials the local electrician. While waiting, he notices the plastic wand, paper crown, snowflake, fish bowl, toy train, brass key, cake slice, and umbrella all in plain sight. The electrician arrives and flips the switch. Light floods the room. Aarav places the rocket in the center, then smiles at his grandmother, who nods with a quiet welcome. The day settles into calm.\"}"
+        },
+        {
+          "status": 200,
+          "elapsedMs": 689,
+          "responseFormat": "json_schema",
+          "repair": true,
+          "usage": {
+            "promptTokens": 1422,
+            "completionTokens": 356,
+            "totalTokens": 1778,
+            "reasoningTokens": 40,
+            "queueTime": 0.169032966,
+            "promptTime": 0.091564071,
+            "completionTime": 0.392305216,
+            "totalTime": 0.483869287
+          },
+          "content": "{\"title\":\"A Cardboard Rocket in the Living Room\",\"storyFacts\":{\"situation\":\"A young boy named Aarav brings his cardboard rocket to his grandmother’s house in Pune\",\"cause\":\"The lights were off when Aarav arrived\",\"resolution\":\"The electrician turns on the lights, and Aarav shows the rocket\",\"objectRoles\":{\"rocket\":\"Aarav’s cardboard rocket model sits on the sofa\",\"magic-wand\":\"A plastic wand is tucked beside the rocket, unused\",\"crown\":\"A paper crown is on a nearby chair\",\"snowflake\":\"A paper snowflake hangs from the ceiling\",\"fish\":\"A small fish in a bowl near the window\",\"train\":\"A toy train rests on a shelf\",\"phone\":\"A smartphone used to call the electrician\",\"key\":\"A brass key sits on the table\",\"cake\":\"A slice of cake is on a plate\",\"umbrella\":\"An umbrella is propped against a wall\"}},\"story\":\"Aarav walks into his grandmother’s living room in Pune, his cardboard rocket resting on the sofa. The room is dark because the lights were forgotten. He pulls out his phone and dials the local electrician. While waiting, he sees the plastic wand, paper crown, snowflake, fish bowl, toy train, brass key, cake slice, and umbrella all in plain sight. The electrician arrives and flips the switch. Light floods the room. Aarav places the rocket in the center, then smiles at his grandmother, who nods with a quiet welcome. The day settles into calm.\"}"
+        }
+      ],
+      "result": {
+        "error": "STORY_INVALID"
+      },
+      "humanReview": null
+    },
+    {
+      "id": "10-funny",
+      "payload": {
+        "objectIds": [
+          "rocket",
+          "magic-wand",
+          "crown",
+          "snowflake",
+          "fish",
+          "train",
+          "phone",
+          "key",
+          "cake",
+          "umbrella"
+        ],
+        "mood": "funny",
+        "recentOpenings": []
+      },
+      "elapsedMs": 772,
+      "calls": [
+        {
+          "status": 200,
+          "elapsedMs": 770,
+          "responseFormat": "json_schema",
+          "repair": false,
+          "usage": {
+            "promptTokens": 979,
+            "completionTokens": 494,
+            "totalTokens": 1473,
+            "reasoningTokens": 32,
+            "queueTime": 0.055851029,
+            "promptTime": 0.06020131,
+            "completionTime": 0.58419091,
+            "totalTime": 0.64439222
+          },
+          "content": "{\"storyFacts\":{\"situation\":\"A small group of kids in a Pune neighbourhood were playing a pretend space adventure in the backyard.\",\"cause\":\"An over‑enthusiastic boy, Arjun, misplaced the cardboard rocket’s cardboard key and tried to launch it with a plastic magic wand.\",\"resolution\":\"The kids realized the key was actually a small wooden key that Arjun had used to open his bike lock, and they all laughed as the rocket stayed on the ground.\",\"objectRoles\":{\"rocket\":\"a cardboard rocket model that cannot fly by itself\",\"magic-wand\":\"a plastic magic wand stage prop that has no powers\",\"crown\":\"a paper crown costume worn by the girl who pretended to be the princess\",\"snowflake\":\"a paper snowflake decoration hanging from the tree\",\"fish\":\"a fish picture on the wall that the kids used as a guide for the alien’s home\",\"train\":\"a toy train that the kids used as the space shuttle’s engine\",\"phone\":\"a mobile phone that the boy used to record the adventure\",\"key\":\"a small wooden key that actually opens the bike lock\",\"cake\":\"a small chocolate cake the kids shared after the game\",\"umbrella\":\"an open umbrella that was used as a spaceship canopy\"},\"resolution\":\"The kids realized the key was actually a small wooden key that Arjun had used to open his bike lock, and they all laughed as the rocket stayed on the ground.\"},\"title\":\"Rocket Launch Mishap\",\"story\":\"In a Pune neighbourhood yard, Arjun and his friends set up a space adventure. They arranged the cardboard rocket, the plastic magic wand, a paper crown, a paper snowflake, a fish picture, a toy train, a mobile phone, a wooden key, a chocolate cake, and an open umbrella. Arjun, eager to launch, slipped the key into the rocket’s “engine” and waved the wand. The rocket did not lift; it sat still. The kids laughed when they found the key was the bike lock key, not a rocket key. The real launch happened when the umbrella, used as a canopy, blew in the wind, sending the cake flying and everyone scrambling for cover—Arjun’s face turned red, and the kids cheered, \\\"Whoops!\\\"\"}"
+        }
+      ],
+      "result": {
+        "title": "Rocket Launch Mishap",
+        "story": "In a Pune neighbourhood yard, Arjun and his friends set up a space adventure. They arranged the cardboard rocket, the plastic magic wand, a paper crown, a paper snowflake, a fish picture, a toy train, a mobile phone, a wooden key, a chocolate cake, and an open umbrella. Arjun, eager to launch, slipped the key into the rocket’s “engine” and waved the wand. The rocket did not lift; it sat still. The kids laughed when they found the key was the bike lock key, not a rocket key. The real launch happened when the umbrella, used as a canopy, blew in the wind, sending the cake flying and everyone scrambling for cover—Arjun’s face turned red, and the kids cheered, \"Whoops!\"",
+        "wordCount": 120,
+        "structuralProblems": []
+      },
+      "humanReview": null
+    },
+    {
+      "id": "10-mystery",
+      "payload": {
+        "objectIds": [
+          "rocket",
+          "magic-wand",
+          "crown",
+          "snowflake",
+          "fish",
+          "train",
+          "phone",
+          "key",
+          "cake",
+          "umbrella"
+        ],
+        "mood": "mystery",
+        "recentOpenings": []
+      },
+      "elapsedMs": 1448,
+      "calls": [
+        {
+          "status": 200,
+          "elapsedMs": 743,
+          "responseFormat": "json_schema",
+          "repair": false,
+          "usage": {
+            "promptTokens": 983,
+            "completionTokens": 408,
+            "totalTokens": 1391,
+            "reasoningTokens": 32,
+            "queueTime": 0.167471864,
+            "promptTime": 0.054968523,
+            "completionTime": 0.46734132,
+            "totalTime": 0.522309843
+          },
+          "content": "{\"storyFacts\":{\"situation\":\"Asha and her friend Raj are preparing for a school science fair in Pune, where they must build a cardboard rocket model and bring other props.\",\"cause\":\"The cardboard rocket is missing from the display table after the school bus returns from a field trip.\",\"resolution\":\"Asha discovers the rocket hidden inside a fish tank, realizing that the fish picture had been swapped with a real fish by a mischievous neighbor, who used the opportunity to hide the rocket.\",\"objectRoles\":{\"rocket\":\"cardboard rocket model (cannot fly by itself)\",\"magic-wand\":\"plastic magic wand stage prop (has no powers)\",\"crown\":\"paper crown costume\",\"snowflake\":\"paper snowflake decoration\",\"fish\":\"fish in an aquarium, or a clearly labelled fish picture or prop\",\"train\":\"train model used for the science fair\",\"phone\":\"phone used to call the teacher\",\"key\":\"key used to open the aquarium\",\"cake\":\"cake served after the fair\",\"umbrella\":\"umbrella kept near the display table for rain\"} },\"title\":\"Missing Rocket Mystery\",\"story\":\"Asha and Raj set up their science fair display on a sunny Pune street. They placed the cardboard rocket, a plastic wand, a paper crown, a snowflake, and a fish picture beside a train model. After the school bus returned, the rocket was gone. Asha checked the aquarium where a real fish swam; the fish picture had been swapped with a real one. The fish picture’s frame was empty, and a small key was hidden inside. The key opened the aquarium door, revealing the rocket hidden under the fish tank. The neighbor, who liked to play tricks, had moved the rocket to hide it, hoping to steal it. The mystery closed when the real fish swam away, leaving the rocket safe.\"}"
+        },
+        {
+          "status": 200,
+          "elapsedMs": 703,
+          "responseFormat": "json_schema",
+          "repair": true,
+          "usage": {
+            "promptTokens": 1431,
+            "completionTokens": 385,
+            "totalTokens": 1816,
+            "reasoningTokens": 28,
+            "queueTime": 0.166726919,
+            "promptTime": 0.094140327,
+            "completionTime": 0.413899357,
+            "totalTime": 0.508039684
+          },
+          "content": "{\"storyFacts\":{\"situation\":\"Asha and Raj are preparing for a school science fair in Pune, where they must build a cardboard rocket model and bring other props.\",\"cause\":\"The cardboard rocket is missing from the display table after the school bus returns from a field trip.\",\"resolution\":\"Asha discovers the rocket hidden inside a fish tank, realizing that the fish picture had been swapped with a real fish by a mischievous neighbor, who used the opportunity to hide the rocket.\",\"objectRoles\":{\"rocket\":\"cardboard rocket model (cannot fly by itself)\",\"magic-wand\":\"plastic magic wand stage prop (has no powers)\",\"crown\":\"paper crown costume\",\"snowflake\":\"paper snowflake decoration\",\"fish\":\"fish in an aquarium, or a clearly labelled fish picture or prop\",\"train\":\"train model used for the science fair\",\"phone\":\"phone used to call the teacher\",\"key\":\"key used to open the aquarium\",\"cake\":\"cake served after the fair\",\"umbrella\":\"umbrella kept near the display table for rain\"}},\"title\":\"Missing Rocket Mystery\",\"story\":\"Asha and Raj set up their science fair display on a Pune street. They placed the cardboard rocket, a plastic wand, a paper crown, a snowflake, a fish picture, and a train model near a table. After the school bus returned, the rocket was missing. Asha saw the fish picture was gone and a real fish was in its place. She used the key to open the aquarium door and found the rocket hidden under the tank. The neighbor had swapped the picture and hid the rocket, hoping to steal it. Asha called the teacher on her phone, then shared the cake and umbrella with the class as a thank‑you.\"}"
+        }
+      ],
+      "result": {
+        "title": "Missing Rocket Mystery",
+        "story": "Asha and Raj set up their science fair display on a Pune street. They placed the cardboard rocket, a plastic wand, a paper crown, a snowflake, a fish picture, and a train model near a table. After the school bus returned, the rocket was missing. Asha saw the fish picture was gone and a real fish was in its place. She used the key to open the aquarium door and found the rocket hidden under the tank. The neighbor had swapped the picture and hid the rocket, hoping to steal it. Asha called the teacher on her phone, then shared the cake and umbrella with the class as a thank‑you.",
+        "wordCount": 110,
+        "structuralProblems": []
+      },
+      "humanReview": null
+    }
+  ]
+}

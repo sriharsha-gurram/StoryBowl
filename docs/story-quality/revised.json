@@ -1,0 +1,456 @@
+{
+  "recordedAt": "2026-10-08T03:16:13.789Z",
+  "model": "openai/gpt-oss-20b",
+  "label": "revised",
+  "systemPrompt": "Write a short, complete fictional story for spoken narration. Aim for 120–135 words, excluding the title; 100–150 words is required. Use the extra space for a believable situation, a small complication, and an earned ending, not filler. Set every story in an everyday Indian backdrop. Use one clear, believable detail from daily life in India, such as a neighbourhood flat, a school courtyard, a local bus stop, a market lane, a coastal town, or a hill town. Use Indian names when a named person is needed. India includes modern cities, small towns, and villages; vary the setting and do not rely on stereotypes, accents, poverty, religion, or festivals to make it Indian. Write in simple, natural English that is easy to understand when heard once. Prefer common words, short sentences, and clear actions. Use complete, grammatical sentences with natural articles. Keep dialogue brief and conversational. Avoid fancy vocabulary, flowery descriptions, obscure idioms, abstract symbolism, poetic metaphors, and unexplained Hindi or other regional-language words. Keep English-only narration. Say 'the rain stopped' rather than 'the clouds surrendered their sorrow'. Do not make streets hum, rain forget, or objects symbolise feelings. Include every selected object naturally, using its label or a close variant. Keep events realistic and interesting. Build ONE ordinary situation with at most two main people and one small problem. Let two or three objects cause actions; give each remaining object a practical supporting role in that SAME situation, not a list, a separate adventure, or a passing memory. Establish where things are and who moves them. Mention the chosen Indian location clearly and use an everyday detail that matters to the action. Ground unusual objects BEFORE they are used: a rocket can be a cardboard model, a magic wand a plastic stage prop, a crown a paper costume, a snowflake a paper decoration. Group related props in one believable activity if needed. They remain ordinary props throughout: no spells, self-moving keys, surprise materialisation or unexplained flying. Calling something a toy at the end does not explain impossible events. Animals can sniff, hide food or knock things over, but cannot plan clues, protect evidence or understand human messages. Before writing, settle on a concrete cause for the problem and an ending that follows from actions already shown. Check who has each key or object, whether a door is open or locked, and how each person knows what they know. Do not output your plan. Give the story a concrete situation, a change, and a satisfying final beat. Calm is warm and unhurried: someone does a small useful thing and we see its result. Funny needs one understandable mistake and a specific comic consequence, not random mishaps followed by laughter. Mystery asks ONE clear question early, shows a physical clue, then identifies who or what caused that same event and how. The explanation must account for the clue; no vague secret, symbolic note, coincidence, or unrelated discovery. Avoid moral lessons, inspirational endings, 'Once upon a time', preambles, hashtags, and explaining how the story was written. Do not explain the joke or label the story structure with phrases such as 'The reversal', 'The twist', or 'The moral'. Show what happened and end with an action or brief dialogue. Introduce few extra props. No explicit sexual content, graphic violence, hateful content, or dangerous instructions. Return only the requested JSON with a simple title of at most eight words and the story.",
+  "controls": {
+    "choiceIndex": 0,
+    "temperature": 0.7,
+    "timeoutMs": 20000,
+    "maxRepair": 1,
+    "caseIds": [
+      "3-calm",
+      "3-funny",
+      "3-mystery",
+      "5-calm",
+      "5-funny",
+      "5-mystery",
+      "10-calm",
+      "10-funny",
+      "10-mystery"
+    ],
+    "pacingMs": 15000
+  },
+  "rubric": {
+    "plainEnglish": "0: hard to follow aloud; 1: minor awkward/abstract phrases; 2: simple, grammatical actions understood on one hearing.",
+    "indianBackdrop": "0: absent/stereotyped; 1: named Indian place only; 2: ordinary Indian setting integrated into the action without stereotypes.",
+    "causeEffect": "0: impossible/contradictory or unexplained event; 1: plausible but a causal gap or unearned ending; 2: setup, change and ending form a believable chain.",
+    "objectUse": "0: list or forced/impossible uses; 1: all mentioned but some decorative/contrived; 2: two or three drive action, others have plausible supporting roles.",
+    "moodPayoff": "0: absent, or mystery answers a different question; 1: recognisable mood but weak ending; 2: helpful calm action, action-caused comic payoff, or evidence resolving the original mystery."
+  },
+  "samples": [
+    {
+      "id": "3-calm",
+      "payload": {
+        "objectIds": [
+          "key",
+          "door",
+          "cat"
+        ],
+        "mood": "calm",
+        "recentOpenings": []
+      },
+      "elapsedMs": 428,
+      "calls": [
+        {
+          "status": 200,
+          "elapsedMs": 424,
+          "responseFormat": "json_schema",
+          "repair": false,
+          "usage": {
+            "promptTokens": 1099,
+            "completionTokens": 186,
+            "totalTokens": 1285,
+            "reasoningTokens": 12,
+            "queueTime": 0.00360749,
+            "promptTime": 0.05405996,
+            "completionTime": 0.200183757,
+            "totalTime": 0.254243717
+          },
+          "content": "{\"title\":\"Quiet Return\",\"story\":\"In a quiet neighbourhood of Pune, the street lights flickered as Rohan walked home from the office. He reached his flat, turned the key in the lock, and pushed the door open. Inside, the living room smelled of jasmine tea. A small cat, black and white, was curled on the sofa, eyes half‑closed. Rohan placed his keys on the small wooden table beside the door and settled on the chair. The cat blinked slowly and stretched, then padded to the table, nudging the key with its paw. Rohan laughed softly, then picked up the key again and turned it in the lock. The door opened with a gentle click. Rohan stepped in, and the cat followed, tail flicking in a quiet welcome.\"}"
+        }
+      ],
+      "result": {
+        "title": "Quiet Return",
+        "story": "In a quiet neighbourhood of Pune, the street lights flickered as Rohan walked home from the office. He reached his flat, turned the key in the lock, and pushed the door open. Inside, the living room smelled of jasmine tea. A small cat, black and white, was curled on the sofa, eyes half‑closed. Rohan placed his keys on the small wooden table beside the door and settled on the chair. The cat blinked slowly and stretched, then padded to the table, nudging the key with its paw. Rohan laughed softly, then picked up the key again and turned it in the lock. The door opened with a gentle click. Rohan stepped in, and the cat followed, tail flicking in a quiet welcome.",
+        "wordCount": 122,
+        "structuralProblems": []
+      },
+      "humanReview": null
+    },
+    {
+      "id": "3-funny",
+      "payload": {
+        "objectIds": [
+          "key",
+          "door",
+          "cat"
+        ],
+        "mood": "funny",
+        "recentOpenings": []
+      },
+      "elapsedMs": 978,
+      "calls": [
+        {
+          "status": 200,
+          "elapsedMs": 504,
+          "responseFormat": "json_schema",
+          "repair": false,
+          "usage": {
+            "promptTokens": 1101,
+            "completionTokens": 264,
+            "totalTokens": 1365,
+            "reasoningTokens": 36,
+            "queueTime": 0.056453405,
+            "promptTime": 0.059569561,
+            "completionTime": 0.311485942,
+            "totalTime": 0.371055503
+          },
+          "content": "{\"title\":\"Key, Door, and the Curious Cat\",\"story\":\"In a quiet Pune neighbourhood, Rohan was about to leave his flat when he realised the front door was locked. He fumbled in his pocket for the key, only to find the small brass key he had bought at a local market was missing. His neighbour’s cat, Moti, had slipped into his apartment earlier, chasing a stray cricket. Rohan ran to the balcony, grabbed the key from the railing, and hurried back. He turned the key in the lock, but the door wouldn’t budge. Frustrated, he shouted, “Moti, open the door!” The cat, unimpressed, flicked a paw and walked away. Rohan stared at the stubborn door, then at the cat, and finally at the key. He laughed, pulled the key out of his own pocket, and opened the door with a sigh of relief. The cat, satisfied, trotted back inside and knocked over a bowl of oranges, making a mess that only a cat could create.\"}"
+        },
+        {
+          "status": 200,
+          "elapsedMs": 471,
+          "responseFormat": "json_schema",
+          "repair": true,
+          "usage": {
+            "promptTokens": 1407,
+            "completionTokens": 236,
+            "totalTokens": 1643,
+            "reasoningTokens": 26,
+            "queueTime": 0.111467329,
+            "promptTime": 0.075817638,
+            "completionTime": 0.24514898,
+            "totalTime": 0.320966618
+          },
+          "content": "{\"title\":\"Key, Door, and the Curious Cat\",\"story\":\"In a quiet Pune neighbourhood, Rohan was about to leave his flat when he realised the front door was locked. He fumbled for the key he had bought at a local market, but it was missing. His neighbour’s cat, Moti, had slipped into his apartment earlier, chasing a cricket. Rohan ran to the balcony, grabbed the key from the railing, and hurried back. He turned it in the lock, but the door wouldn’t budge. Frustrated, he shouted, “Moti, open the door!” The cat, unimpressed, flicked a paw and walked away. Rohan stared at the stubborn door, then at the cat, and finally at the key. He laughed, pulled the key out of his own pocket, and opened the door. The cat, satisfied, trotted back inside and knocked over a bowl of oranges, making a mess that only a cat could create.\"}"
+        }
+      ],
+      "result": {
+        "title": "Key, Door, and the Curious Cat",
+        "story": "In a quiet Pune neighbourhood, Rohan was about to leave his flat when he realised the front door was locked. He fumbled for the key he had bought at a local market, but it was missing. His neighbour’s cat, Moti, had slipped into his apartment earlier, chasing a cricket. Rohan ran to the balcony, grabbed the key from the railing, and hurried back. He turned it in the lock, but the door wouldn’t budge. Frustrated, he shouted, “Moti, open the door!” The cat, unimpressed, flicked a paw and walked away. Rohan stared at the stubborn door, then at the cat, and finally at the key. He laughed, pulled the key out of his own pocket, and opened the door. The cat, satisfied, trotted back inside and knocked over a bowl of oranges, making a mess that only a cat could create.",
+        "wordCount": 141,
+        "structuralProblems": []
+      },
+      "humanReview": null
+    },
+    {
+      "id": "3-mystery",
+      "payload": {
+        "objectIds": [
+          "key",
+          "door",
+          "cat"
+        ],
+        "mood": "mystery",
+        "recentOpenings": []
+      },
+      "elapsedMs": 504,
+      "calls": [
+        {
+          "status": 200,
+          "elapsedMs": 502,
+          "responseFormat": "json_schema",
+          "repair": false,
+          "usage": {
+            "promptTokens": 1105,
+            "completionTokens": 221,
+            "totalTokens": 1326,
+            "reasoningTokens": 34,
+            "queueTime": 0.082350734,
+            "promptTime": 0.056327682,
+            "completionTime": 0.291027397,
+            "totalTime": 0.347355079
+          },
+          "content": "{\"title\":\"Lost Key in Pune\",\"story\":\"In a quiet Pune neighbourhood, Neha stood before the old wooden door of her flat, the keyhole glinting in the afternoon sun. She had misplaced the key she used every day. The door was locked, and her cat, Pihu, sat beside it, tail flicking. Neha called out, \\\"Pihu, where is it?\\\" The cat meowed and nudged a small, folded piece of paper toward the door. On the paper was a single line: \\\"Check the mailbox.\\\" Neha opened the mailbox, found a small envelope, and inside was a key identical to hers. She laughed, surprised, and turned to Pihu, who purred and jumped onto her lap. The key had been hidden by the cat all along, waiting for the right moment to reveal itself.\"}"
+        }
+      ],
+      "result": {
+        "title": "Lost Key in Pune",
+        "story": "In a quiet Pune neighbourhood, Neha stood before the old wooden door of her flat, the keyhole glinting in the afternoon sun. She had misplaced the key she used every day. The door was locked, and her cat, Pihu, sat beside it, tail flicking. Neha called out, \"Pihu, where is it?\" The cat meowed and nudged a small, folded piece of paper toward the door. On the paper was a single line: \"Check the mailbox.\" Neha opened the mailbox, found a small envelope, and inside was a key identical to hers. She laughed, surprised, and turned to Pihu, who purred and jumped onto her lap. The key had been hidden by the cat all along, waiting for the right moment to reveal itself.",
+        "wordCount": 123,
+        "structuralProblems": []
+      },
+      "humanReview": null
+    },
+    {
+      "id": "5-calm",
+      "payload": {
+        "objectIds": [
+          "umbrella",
+          "letter",
+          "bicycle",
+          "cake",
+          "dog"
+        ],
+        "mood": "calm",
+        "recentOpenings": []
+      },
+      "elapsedMs": 730,
+      "calls": [
+        {
+          "status": 200,
+          "elapsedMs": 727,
+          "responseFormat": "json_schema",
+          "repair": false,
+          "usage": {
+            "promptTokens": 1103,
+            "completionTokens": 192,
+            "totalTokens": 1295,
+            "reasoningTokens": 19,
+            "queueTime": 0.110697899,
+            "promptTime": 0.355702906,
+            "completionTime": 0.202016347,
+            "totalTime": 0.557719253
+          },
+          "content": "{\"title\":\"Pune Corner Waiting\",\"story\":\"The sun was low over the narrow street of Pune’s Laxmi Nagar when Rohan pulled his umbrella into the small courtyard of his neighbour’s flat. He had just finished a long day at the office and wanted a quiet moment. A folded letter lay beside the bicycle that had been parked against the wall. Rohan opened it and read a note from his sister, asking if he could help her bake a cake for her birthday. He set the letter aside, folded the umbrella back, and walked to the kitchen. The neighbour’s dog, a gentle mutt, followed him inside. Rohan placed the cake on the table, the dog settled beside the umbrella, and the quiet evening settled over the corner, a calm welcome to the night.\"}"
+        }
+      ],
+      "result": {
+        "title": "Pune Corner Waiting",
+        "story": "The sun was low over the narrow street of Pune’s Laxmi Nagar when Rohan pulled his umbrella into the small courtyard of his neighbour’s flat. He had just finished a long day at the office and wanted a quiet moment. A folded letter lay beside the bicycle that had been parked against the wall. Rohan opened it and read a note from his sister, asking if he could help her bake a cake for her birthday. He set the letter aside, folded the umbrella back, and walked to the kitchen. The neighbour’s dog, a gentle mutt, followed him inside. Rohan placed the cake on the table, the dog settled beside the umbrella, and the quiet evening settled over the corner, a calm welcome to the night.",
+        "wordCount": 126,
+        "structuralProblems": []
+      },
+      "humanReview": null
+    },
+    {
+      "id": "5-funny",
+      "payload": {
+        "objectIds": [
+          "umbrella",
+          "letter",
+          "bicycle",
+          "cake",
+          "dog"
+        ],
+        "mood": "funny",
+        "recentOpenings": []
+      },
+      "elapsedMs": 514,
+      "calls": [
+        {
+          "status": 200,
+          "elapsedMs": 512,
+          "responseFormat": "json_schema",
+          "repair": false,
+          "usage": {
+            "promptTokens": 1105,
+            "completionTokens": 204,
+            "totalTokens": 1309,
+            "reasoningTokens": 22,
+            "queueTime": 0.166386522,
+            "promptTime": 0.065130824,
+            "completionTime": 0.210378583,
+            "totalTime": 0.275509407
+          },
+          "content": "{\"title\":\"Pune Park Mix‑up\",\"story\":\"In a Pune neighbourhood, Arjun was walking past the park when a sudden drizzle began. He pulled out his bright red umbrella, opened it, and saw a small letter stuck to the handle. The letter was from his neighbour, inviting him to a cake‑tasting party. Arjun laughed, thinking the letter was a prank, and rode his bicycle to the corner shop for a cake. On the way, his dog, Balu, chased a pigeon and slipped under the open umbrella. The umbrella fell, scattering the letter, the cake, and Balu’s muddy paws across the pavement. When Arjun reached the shop, he found the cake already eaten, the letter folded, and Balu wagging his tail, as if saying, \\\"I saved the cake!\\\"\"}"
+        }
+      ],
+      "result": {
+        "title": "Pune Park Mix‑up",
+        "story": "In a Pune neighbourhood, Arjun was walking past the park when a sudden drizzle began. He pulled out his bright red umbrella, opened it, and saw a small letter stuck to the handle. The letter was from his neighbour, inviting him to a cake‑tasting party. Arjun laughed, thinking the letter was a prank, and rode his bicycle to the corner shop for a cake. On the way, his dog, Balu, chased a pigeon and slipped under the open umbrella. The umbrella fell, scattering the letter, the cake, and Balu’s muddy paws across the pavement. When Arjun reached the shop, he found the cake already eaten, the letter folded, and Balu wagging his tail, as if saying, \"I saved the cake!\"",
+        "wordCount": 120,
+        "structuralProblems": []
+      },
+      "humanReview": null
+    },
+    {
+      "id": "5-mystery",
+      "payload": {
+        "objectIds": [
+          "umbrella",
+          "letter",
+          "bicycle",
+          "cake",
+          "dog"
+        ],
+        "mood": "mystery",
+        "recentOpenings": []
+      },
+      "elapsedMs": 320,
+      "calls": [
+        {
+          "status": 200,
+          "elapsedMs": 319,
+          "responseFormat": "json_schema",
+          "repair": false,
+          "usage": {
+            "promptTokens": 1109,
+            "completionTokens": 186,
+            "totalTokens": 1295,
+            "reasoningTokens": 15,
+            "queueTime": 0.01858395,
+            "promptTime": 0.033354099,
+            "completionTime": 0.207689148,
+            "totalTime": 0.241043247
+          },
+          "content": "{\"title\":\"Missing Letter Mystery\",\"story\":\"In a quiet Pune neighbourhood, Rahul was waiting for the bus. A sudden rain burst and he pulled his old umbrella from the shelf. Inside the umbrella’s pocket was a folded letter, addressed to him, but with no return address. Rahul unfolded it and read, “Find the cake at the corner stall, it holds the key.” He remembered the cake stall near his school courtyard. He rode his bicycle to the stall, but the stall owner was gone. The stall’s cardboard cake was empty, the box on the table was open and a small dog was chewing on the box. The dog had found the letter, slipped it into the umbrella, and then vanished behind the stall. Rahul laughed, realizing the dog was the hidden messenger.\\n\"}"
+        }
+      ],
+      "result": {
+        "title": "Missing Letter Mystery",
+        "story": "In a quiet Pune neighbourhood, Rahul was waiting for the bus. A sudden rain burst and he pulled his old umbrella from the shelf. Inside the umbrella’s pocket was a folded letter, addressed to him, but with no return address. Rahul unfolded it and read, “Find the cake at the corner stall, it holds the key.” He remembered the cake stall near his school courtyard. He rode his bicycle to the stall, but the stall owner was gone. The stall’s cardboard cake was empty, the box on the table was open and a small dog was chewing on the box. The dog had found the letter, slipped it into the umbrella, and then vanished behind the stall. Rahul laughed, realizing the dog was the hidden messenger.\n",
+        "wordCount": 126,
+        "structuralProblems": []
+      },
+      "humanReview": null
+    },
+    {
+      "id": "10-calm",
+      "payload": {
+        "objectIds": [
+          "rocket",
+          "magic-wand",
+          "crown",
+          "snowflake",
+          "fish",
+          "train",
+          "phone",
+          "key",
+          "cake",
+          "umbrella"
+        ],
+        "mood": "calm",
+        "recentOpenings": []
+      },
+      "elapsedMs": 490,
+      "calls": [
+        {
+          "status": 200,
+          "elapsedMs": 487,
+          "responseFormat": "json_schema",
+          "repair": false,
+          "usage": {
+            "promptTokens": 1115,
+            "completionTokens": 240,
+            "totalTokens": 1355,
+            "reasoningTokens": 61,
+            "queueTime": 0.019038037,
+            "promptTime": 0.055857392,
+            "completionTime": 0.338510043,
+            "totalTime": 0.394367435
+          },
+          "content": "{\"title\":\"Rocket in the Courtyard\",\"story\":\"In a quiet Pune neighbourhood, Rohan’s small courtyard buzzed with the hum of a passing train. He had set up a cardboard rocket beside the old banyan tree, a plastic wand in his hand and a paper crown on the ground. His neighbour, Meera, dropped her phone and a small fish bowl by the gate. Rohan lifted the key that had slipped from his pocket, tucked the fish inside the bowl, and placed a snowflake sticker on the rocket’s nose. He pressed the wand, and the rocket rolled gently across the courtyard, stopping near the cake he had baked for a birthday. As the sun dipped, an umbrella lay open beside the cake, offering shade. Rohan smiled, turned to Meera, and whispered, “Welcome home.”\"}"
+        }
+      ],
+      "result": {
+        "title": "Rocket in the Courtyard",
+        "story": "In a quiet Pune neighbourhood, Rohan’s small courtyard buzzed with the hum of a passing train. He had set up a cardboard rocket beside the old banyan tree, a plastic wand in his hand and a paper crown on the ground. His neighbour, Meera, dropped her phone and a small fish bowl by the gate. Rohan lifted the key that had slipped from his pocket, tucked the fish inside the bowl, and placed a snowflake sticker on the rocket’s nose. He pressed the wand, and the rocket rolled gently across the courtyard, stopping near the cake he had baked for a birthday. As the sun dipped, an umbrella lay open beside the cake, offering shade. Rohan smiled, turned to Meera, and whispered, “Welcome home.”",
+        "wordCount": 124,
+        "structuralProblems": []
+      },
+      "humanReview": null
+    },
+    {
+      "id": "10-funny",
+      "payload": {
+        "objectIds": [
+          "rocket",
+          "magic-wand",
+          "crown",
+          "snowflake",
+          "fish",
+          "train",
+          "phone",
+          "key",
+          "cake",
+          "umbrella"
+        ],
+        "mood": "funny",
+        "recentOpenings": []
+      },
+      "elapsedMs": 1092,
+      "calls": [
+        {
+          "status": 200,
+          "elapsedMs": 546,
+          "responseFormat": "json_schema",
+          "repair": false,
+          "usage": {
+            "promptTokens": 1117,
+            "completionTokens": 212,
+            "totalTokens": 1329,
+            "reasoningTokens": 24,
+            "queueTime": 0.169190677,
+            "promptTime": 0.076319195,
+            "completionTime": 0.233431583,
+            "totalTime": 0.309750778
+          },
+          "content": "{\"title\":\"Rocket Mishap at Pune Bus Stop\",\"story\":\"At a busy Pune bus stop, Rohan waited for the train with his phone in hand. A child’s cardboard rocket lay beside him, bright red and ready to launch. Rohan laughed, then slipped on a stray umbrella left by a vendor. He stumbled, and the rocket slipped from his grip, spinning toward the crowd. The little boy who owned it cried, but Rohan grabbed the rocket’s tail and, with a dramatic flourish, waved his plastic magic wand. The crowd gasped, then burst into laughter when the rocket landed on a nearby fish‑tasting stall and popped open, spilling a cake and a snowflake‑shaped cookie. The boy’s crown, which he had been wearing, fell off and stuck to the cake, leaving everyone in stitches as the train finally pulled in. \"}"
+        },
+        {
+          "status": 200,
+          "elapsedMs": 542,
+          "responseFormat": "json_schema",
+          "repair": true,
+          "usage": {
+            "promptTokens": 1380,
+            "completionTokens": 224,
+            "totalTokens": 1604,
+            "reasoningTokens": 8,
+            "queueTime": 0.16910949,
+            "promptTime": 0.094501896,
+            "completionTime": 0.246347733,
+            "totalTime": 0.340849629
+          },
+          "content": "{\"title\":\"Rocket Mishap at Pune Bus Stop\",\"story\":\"At a busy Pune bus stop, Rohan waited for the train with his phone in hand. A child’s cardboard rocket lay beside him, bright red and ready to launch. Rohan laughed, then slipped on a stray umbrella left by a vendor. He stumbled, and the rocket slipped from his grip, spinning toward the crowd. The little boy who owned it cried, but Rohan grabbed the rocket’s tail and, with a dramatic flourish, waved his plastic magic wand. The crowd gasped, then burst into laughter when the rocket landed on a nearby fish‑tasting stall and popped open, spilling a cake and a snowflake‑shaped cookie. The boy’s crown, which he had been wearing, fell off and stuck to the cake, leaving everyone in stitches as the train finally pulled in. Rohan, holding the key to the stall’s lock, laughed and offered to open the door for the boy, ending the scene with a shared grin. \"}"
+        }
+      ],
+      "result": {
+        "error": "STORY_INVALID"
+      },
+      "humanReview": null
+    },
+    {
+      "id": "10-mystery",
+      "payload": {
+        "objectIds": [
+          "rocket",
+          "magic-wand",
+          "crown",
+          "snowflake",
+          "fish",
+          "train",
+          "phone",
+          "key",
+          "cake",
+          "umbrella"
+        ],
+        "mood": "mystery",
+        "recentOpenings": []
+      },
+      "elapsedMs": 1316,
+      "calls": [
+        {
+          "status": 200,
+          "elapsedMs": 521,
+          "responseFormat": "json_schema",
+          "repair": false,
+          "usage": {
+            "promptTokens": 1121,
+            "completionTokens": 238,
+            "totalTokens": 1359,
+            "reasoningTokens": 20,
+            "queueTime": 0.112073861,
+            "promptTime": 0.088884206,
+            "completionTime": 0.25698982,
+            "totalTime": 0.345874026
+          },
+          "content": "{\"title\":\"The Missing Rocket\",\"story\":\"In a quiet Pune neighbourhood, Arjun sat on his porch with a phone in hand, watching the evening train glide past. A sudden gust lifted his umbrella and scattered a handful of snowflakes onto the tiled floor. Nearby, a small cardboard rocket lay beside a plastic crown, a toy from a birthday cake party. Arjun noticed a fish‑shaped key dangling from the rocket’s base. He wondered why a toy rocket had a key. He called his neighbour, Meera, who had been baking a cake for the street festival. She laughed, then said she had seen the rocket on the train platform, left behind when the train stopped for a moment. The key was a spare lock‑pick she kept for the community centre. Arjun realised the rocket was a simple toy, but the key had been misplaced by a hurried passenger. The mystery resolved when the train driver returned the rocket to its owner, a school teacher, and the key to the community centre.\\n\"}"
+        },
+        {
+          "status": 200,
+          "elapsedMs": 792,
+          "responseFormat": "json_schema",
+          "repair": true,
+          "usage": {
+            "promptTokens": 1423,
+            "completionTokens": 236,
+            "totalTokens": 1659,
+            "reasoningTokens": 26,
+            "queueTime": 0.168943986,
+            "promptTime": 0.340389136,
+            "completionTime": 0.247883561,
+            "totalTime": 0.588272697
+          },
+          "content": "{\"title\":\"The Missing Rocket\",\"story\":\"In a quiet Pune neighbourhood, Arjun sat on his porch with a phone in hand, watching the evening train glide past. A sudden gust lifted his umbrella and scattered a handful of snowflakes onto the tiled floor. Nearby, a small cardboard rocket lay beside a plastic crown, a toy from a birthday cake party. A magic wand, a fish‑shaped key, and a tiny toy train sat beside the rocket, all left by a child who had been playing in the courtyard. Arjun wondered why the rocket had a key. He called his neighbour, Meera, who had been baking a cake for the street festival. She laughed and said she saw the rocket on the train platform, left behind when the train stopped for a moment. The key was a spare lock‑pick she kept for the community centre. The mystery resolved when the train driver returned the rocket to its owner, a school teacher, and the key to the community centre.\\n\"}"
+        }
+      ],
+      "result": {
+        "error": "STORY_INVALID"
+      },
+      "humanReview": null
+    }
+  ]
+}

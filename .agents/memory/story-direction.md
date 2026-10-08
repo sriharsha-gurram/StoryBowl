@@ -19,3 +19,9 @@ Inspect actual generated stories before claiming narrative realism, especially a
 **Why:** Live ten-object samples sometimes became fantastical or gave weak explanations despite explicit realism instructions and plain-language examples.
 
 **How to apply:** Review cause and effect, natural object use, and whether a mystery resolves its original question. Be clear about model-dependent quality rather than treating structural validation as a writing-quality check.
+
+Do not promote a stronger realism prompt or switch models on wording alone. Keep unsuccessful prompt experiments out of the running app, preserve their measured examples, and seek approval before a model comparison or switch.
+
+**Why:** Controlled pilots with explicit prop grounding and a separate structured-fictional-facts approach still produced contradictory keys, animal messengers and weak mystery explanations. Neither established a useful quality gain.
+
+**How to apply:** Compare actual prose with the same human rubric and controlled inputs before claiming improvement. Treat the small pilot as evidence of risks, not a guarantee that a particular model always fails or succeeds.

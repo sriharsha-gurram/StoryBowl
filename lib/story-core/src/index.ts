@@ -30,6 +30,8 @@ export const fixtures: Record<Mood, { title: string; story: string }> = {
   mystery: { title: "Who Left the Letter?", story: "After the rain, Asha found a letter under the lamp outside her Jaipur home. It said, look behind your umbrella. She checked the handwriting, but there was no name. Her cat was sitting beside the umbrella, guarding a small box. Inside was the key she had lost on her way to the market yesterday. Asha wondered who knew where she lived. Then her neighbour waved from the gate. He had found the key near his shop and recognised the red thread tied around it. He had knocked while she was out, and the cat had followed him upstairs. Asha thanked him and picked up the key. The cat followed her inside, still expecting a reward." },
 };
 export const words = (text: string) => text.trim().split(/\s+/u).filter(Boolean);
+// Structural checks only: neither word count nor label coverage measures realism.
+// Use the offline evaluation rubric for plot logic, mood and meaningful object use.
 export function storyProblems(value: unknown, ids: string[]): string[] {
   if (!value || typeof value !== "object") return ["invalid JSON object"];
   const { title, story } = value as Record<string, unknown>;

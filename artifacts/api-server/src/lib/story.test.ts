@@ -34,6 +34,10 @@ describe("shared registry and validation", () => {
     expect(storyProblems({ title: "Cat", story: "cat ".repeat(99) }, ["cat"])).toEqual(["too short: 99 words"]);
     expect(storyProblems({ title: "Cat", story: "cat ".repeat(151) }, ["cat"])).toEqual(["too long: 151 words"]);
   });
+  it("does not misrepresent structural validity as narrative quality", () => {
+    const unrealistic = { title: "Magic", story: `In Pune the cat wrote a letter and the umbrella flew away. ${"lamp rain ".repeat(49)}` };
+    expect(storyProblems(unrealistic, exampleIds)).toEqual([]);
+  });
 });
 describe("Groq generation", () => {
   it("uses strict JSON schema and no extra calls on valid output", async () => {
@@ -93,6 +97,37 @@ describe("Groq generation", () => {
       init!.signal!.addEventListener("abort",()=>reject(new Error("aborted")),{once:true});
     }));
     await expect(createStory(payload,{...options(mock),timeoutMs:5})).rejects.toMatchObject({code:"TIMEOUT"});
+  });
+  it("shares one deadline and one signal across generation and repair", async () => {
+    vi.useFakeTimers();
+    try {
+      const signals: AbortSignal[] = [];
+      const mock = vi.fn<typeof fetch>().mockImplementation(async (_url, init) => {
+        signals.push(init!.signal!);
+        if (signals.length === 1) {
+          await new Promise(resolve => setTimeout(resolve, 15));
+          return response({ title: "Short", story: "cat" });
+        }
+        return new Promise((_resolve, reject) => {
+          init!.signal!.addEventListener("abort", () => reject(new Error("aborted")), { once: true });
+        });
+      });
+      const pending = expect(createStory(payload, { ...options(mock), timeoutMs: 20 })).rejects.toMatchObject({ code: "TIMEOUT" });
+      await vi.advanceTimersByTimeAsync(20);
+      await pending;
+      expect(mock).toHaveBeenCalledTimes(2);
+      expect(signals[0]).toBe(signals[1]);
+      expect(signals[1]!.aborted).toBe(true);
+    } finally { vi.useRealTimers(); }
+  });
+  it("allows fixed prompt choices for repeatable evaluation without changing defaults", async () => {
+    const mock = vi.fn<typeof fetch>().mockResolvedValue(response(fixtures.calm));
+    await createStory(payload, { ...options(mock), chooseIndex: () => 0 });
+    const body = JSON.parse(mock.mock.calls[0]![1]!.body as string);
+    const request = body.messages.find((m: { role: string }) => m.role === "user").content;
+    expect(request).toContain("a neighbourhood in Pune");
+    expect(request).toContain("Focal object: umbrella");
+    expect(request).toContain("Perspective: close third person");
   });
 });
 it("limits to twenty requests per IP and resets after ten minutes", () => {
