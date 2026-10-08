@@ -1,6 +1,6 @@
-# [Project name]
+# StoryBowl
 
-_Replace the heading above with the project's name, and this line with one sentence describing what this app does for users._
+An English-language storytelling browser toy for adult testers. The attached brief is the product scope; no accounts, database, billing, analytics, uploads, or other AI providers.
 
 ## Run & Operate
 
@@ -9,7 +9,7 @@ _Replace the heading above with the project's name, and this line with one sente
 - `pnpm run build` — typecheck + build all packages
 - `pnpm --filter @workspace/api-spec run codegen` — regenerate API hooks and Zod schemas from the OpenAPI spec
 - `pnpm --filter @workspace/db run push` — push DB schema changes (dev only)
-- Required env: `DATABASE_URL` — Postgres connection string
+- Optional secret: `GROQ_API_KEY`; without it the app uses explicit demo mode.
 
 ## Stack
 
@@ -34,7 +34,7 @@ _Describe the high-level user-facing capabilities of this app once they exist._
 
 ## User preferences
 
-_Populate as you build — explicit user instructions worth remembering across sessions._
+Keep source files few and readable, with a two-line explanation of what each authored source file does and why it exists. Preserve the specified light palette and Groq provider/model. Finish functionality before polishing.
 
 ## Gotchas
 

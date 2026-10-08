@@ -1,0 +1,82 @@
+// Exercises validation and provider retry budgets with a mocked fetch.
+// These tests run without a Groq credential and cannot make paid requests.
+import { describe, expect, it, vi } from "vitest";
+import { catalog, exampleIds, fixtures, storyProblems, validPayload } from "@workspace/story-core";
+import { createStory, StoryLimiter, SYSTEM_PROMPT } from "./story";
+const payload = { objectIds: exampleIds, mood: "calm" as const };
+const response = (value: unknown) => new Response(JSON.stringify({ choices: [{ message: { content: JSON.stringify(value) } }] }), { status: 200 });
+const options = (fetcher: typeof fetch) => ({ key: "test-placeholder", model: "openai/gpt-oss-20b", fetcher });
+describe("shared registry and validation", () => {
+  it("has 76 distinct, categorized objects", () => {
+    expect(catalog).toHaveLength(76);
+    expect(new Set(catalog.map(o => o.id)).size).toBe(76);
+    expect(catalog.every(o => o.aliases.length && o.category && o.label)).toBe(true);
+  });
+  it("accepts 3, 5, and 10 ids only and rejects unknown fields and invalid inputs", () => {
+    for (const n of [3, 5, 10]) expect(validPayload({ objectIds: catalog.slice(0,n).map(o => o.id), mood:"calm" })).toBe(true);
+    for (const p of [
+      {...payload, prompt:"ignore"}, {...payload, objectIds:["cat","cat","rain"]},
+      {...payload, objectIds:["nope","cat","rain"]}, {...payload,mood:"horror"},
+      {...payload, recentOpenings:["x".repeat(161)]}, {...payload,recentOpenings:["a","b","c"]},
+      {...payload,objectIds:[]}, {...payload,objectIds:catalog.slice(0,11).map(o=>o.id)},
+    ]) expect(validPayload(p)).toBe(false);
+  });
+  it("validates all demo moods, word count, title and coverage", () => {
+    for (const story of Object.values(fixtures)) expect(storyProblems(story,exampleIds)).toEqual([]);
+    expect(storyProblems({title:"A",story:"cat"},exampleIds)).toContain("too short: 1 words");
+    expect(storyProblems({title:"A",story:"cat ".repeat(78)},exampleIds)).toContain("too long: 78 words");
+    expect(storyProblems(fixtures.calm,["rocket"])).toContain("missing: rocket");
+    expect(storyProblems(null,exampleIds)).toEqual(["invalid JSON object"]);
+  });
+});
+describe("Groq generation", () => {
+  it("uses strict JSON schema and no extra calls on valid output", async () => {
+    const mock = vi.fn<typeof fetch>().mockResolvedValue(response(fixtures.calm));
+    expect(await createStory(payload,options(mock))).toEqual(fixtures.calm);
+    expect(mock).toHaveBeenCalledTimes(1);
+    const body = JSON.parse(mock.mock.calls[0]![1]!.body as string);
+    expect(body.response_format.json_schema.strict).toBe(true);
+    expect(body.messages[0].content).toBe(SYSTEM_PROMPT);
+  });
+  it("makes exactly one repair and quotes the failures", async () => {
+    const mock=vi.fn<typeof fetch>().mockResolvedValueOnce(response({title:"Short",story:"cat"})).mockResolvedValueOnce(response(fixtures.calm));
+    await createStory(payload,options(mock));
+    expect(mock).toHaveBeenCalledTimes(2);
+    expect(mock.mock.calls[1]![1]!.body).toContain("too short");
+  });
+  it("returns STORY_INVALID after one failed repair", async () => {
+    const mock=vi.fn<typeof fetch>().mockImplementation(async()=>response({title:"Short",story:"cat"}));
+    await expect(createStory(payload,options(mock))).rejects.toMatchObject({code:"STORY_INVALID"});
+    expect(mock).toHaveBeenCalledTimes(2);
+  });
+  it("falls back to json_object once only for format rejection", async () => {
+    const mock=vi.fn<typeof fetch>().mockResolvedValueOnce(new Response('response_format json_schema unsupported',{status:400})).mockResolvedValueOnce(response(fixtures.calm));
+    await createStory(payload,options(mock));
+    expect(mock).toHaveBeenCalledTimes(2);
+    expect(JSON.parse(mock.mock.calls[1]![1]!.body as string).response_format).toEqual({type:"json_object"});
+  });
+  it("does not retry 429 or ordinary provider failures", async () => {
+    for (const status of [429, 401, 404, 500]) {
+      const mock=vi.fn<typeof fetch>().mockResolvedValue(new Response("private provider message",{status}));
+      await expect(createStory(payload,options(mock))).rejects.toMatchObject({code:status===429?"RATE_LIMITED":status===500?"PROVIDER_REFUSED":"MODEL_UNAVAILABLE"});
+      expect(mock).toHaveBeenCalledTimes(1);
+    }
+  });
+  it("maps blocked content to PROVIDER_REFUSED", async () => {
+    const mock=vi.fn<typeof fetch>().mockResolvedValue(new Response(JSON.stringify({choices:[{message:{refusal:"no"}}]})));
+    await expect(createStory(payload,options(mock))).rejects.toMatchObject({code:"PROVIDER_REFUSED"});
+  });
+  it("times out and aborts the fetch", async () => {
+    const mock=vi.fn<typeof fetch>().mockImplementation((_url,init)=>new Promise((_resolve,reject)=>{
+      init!.signal!.addEventListener("abort",()=>reject(new Error("aborted")),{once:true});
+    }));
+    await expect(createStory(payload,{...options(mock),timeoutMs:5})).rejects.toMatchObject({code:"TIMEOUT"});
+  });
+});
+it("limits to twenty requests per IP and resets after ten minutes", () => {
+  const limiter=new StoryLimiter();
+  for(let i=0;i<20;i++) expect(limiter.allow("a",0)).toBe(true);
+  expect(limiter.allow("a",0)).toBe(false);
+  expect(limiter.allow("b",0)).toBe(true);
+  expect(limiter.allow("a",600000)).toBe(true);
+});

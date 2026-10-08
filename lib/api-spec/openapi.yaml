@@ -11,6 +11,38 @@ tags:
   - name: health
     description: Health operations
 paths:
+  /status:
+    get:
+      operationId: getStoryStatus
+      responses:
+        "200":
+          description: Story generation mode
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StoryStatus"
+  /story:
+    post:
+      operationId: generateStory
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/StoryInput"
+      responses:
+        "200":
+          description: Complete story
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Story"
+        default:
+          description: Friendly error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StoryError"
   /healthz:
     get:
       operationId: healthCheck
@@ -26,6 +58,47 @@ paths:
                 $ref: "#/components/schemas/HealthStatus"
 components:
   schemas:
+    StoryStatus:
+      type: object
+      required: [demo]
+      properties:
+        demo: { type: boolean }
+    StoryInput:
+      type: object
+      additionalProperties: false
+      required: [objectIds, mood]
+      properties:
+        objectIds:
+          type: array
+          minItems: 3
+          maxItems: 10
+          uniqueItems: true
+          items: { type: string }
+        mood: { type: string, enum: [calm, funny, mystery] }
+        recentOpenings:
+          type: array
+          maxItems: 2
+          items: { type: string, maxLength: 160 }
+    Story:
+      type: object
+      required: [id, objectIds, mood, language, title, story, wordCount, source]
+      properties:
+        id: { type: string }
+        objectIds:
+          type: array
+          items: { type: string }
+        mood: { type: string, enum: [calm, funny, mystery] }
+        language: { type: string, enum: [en] }
+        title: { type: string }
+        story: { type: string }
+        wordCount: { type: integer }
+        source: { type: string, enum: [ai, demo] }
+    StoryError:
+      type: object
+      required: [code, message]
+      properties:
+        code: { type: string }
+        message: { type: string }
     HealthStatus:
       type: object
       properties:

@@ -1,4 +1,6 @@
-import express, { type Express } from "express";
+// Configures JSON parsing, safe request logging, and the API router.
+// Central error handling ensures malformed bodies never leak internal details.
+import express, { type Express, type ErrorRequestHandler } from "express";
 import cors from "cors";
 import pinoHttp from "pino-http";
 import router from "./routes";
@@ -26,9 +28,12 @@ app.use(
   }),
 );
 app.use(cors());
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(express.json({ limit: "8kb" }));
 
 app.use("/api", router);
+const handleError: ErrorRequestHandler = (_error, _req, res, _next) => {
+  res.status(400).json({ code: "BAD_REQUEST", message: "Please send a valid JSON request smaller than 8 KB." });
+};
+app.use(handleError);
 
 export default app;

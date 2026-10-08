@@ -1,0 +1,222 @@
+You are a senior full-stack developer with product taste. Build the complete,
+working app described below in this session. Make small sensible decisions
+yourself. The only thing you may stop for is a missing secret, which you
+request through this platform's secret store, never in chat. Build in this
+order and do not redesign midway: (1) UI + demo mode, (2) server generation,
+(3) narration, (4) error handling + tests, (5) polish. Finish before polishing.
+Deliver code, not a plan. I am learning to build with AI: keep files few and
+readable, and put a two-line comment at the top of each file saying what it
+does and why it exists.
+
+1. PRODUCT
+StoryBowl — "Ordinary things. Unexpected stories."
+A desktop-first browser toy. The user picks 3–10 everyday objects by clicking
+or dragging them into a bowl, chooses a mood (Calm / Funny / Mystery), and
+presses "Make my story." A server endpoint asks an LLM for a ~55-word story
+that connects the objects; the app shows it and reads it aloud with the
+browser's speech synthesis. Replay re-reads the saved text with zero new
+requests. New story keeps the ingredients and asks for a fresh take. English
+only. This is a personal learning prototype for adult testers, not a
+child-directed product.
+
+2. STACK
+- React + TypeScript + Vite + Tailwind CSS. lucide-react for icons.
+- Plain React state (useState/useReducer). Components: ObjectShelf,
+  ObjectTile, StoryBowl, MoodPicker, StoryResult, HowItWorks; one hook:
+  useSpeech.
+- One server function, POST /api/story, plus GET /api/status, using this
+  platform's native server option (Express on Replit; a serverless or edge
+  function on Bolt or Lovable).
+- Call Groq's chat-completions REST endpoint directly with fetch, no SDK, so
+  the same code runs anywhere and nothing retries behind our back.
+- Environment: GROQ_API_KEY (server-only secret), GROQ_MODEL (default
+  "openai/gpt-oss-20b"), DEMO_MODE (optional "true" to force demo). Ship
+  .env.example with placeholders only.
+
+3. OBJECT CATALOG (76 objects; lucide icon name in parentheses)
+Nature: tree (TreePine), flower (Flower), leaf (Leaf), mountain (Mountain),
+ocean (Waves), sun (Sun), moon (Moon), star (Star), cloud (Cloud),
+rain (CloudRain), snowflake (Snowflake), rainbow (Rainbow), wind (Wind),
+flame (Flame).
+Animals: dog (Dog), cat (Cat), bird (Bird), fish (Fish), rabbit (Rabbit),
+turtle (Turtle), snail (Snail), squirrel (Squirrel), beetle (Bug), worm (Worm).
+People & places: person (User), family (Users), baby (Baby), house (House),
+castle (Castle), school (School), shop (Store), tent (Tent), fence (Fence),
+mailbox (Mailbox).
+Everyday things: armchair (Armchair), bed (BedDouble), lamp (Lamp),
+door (DoorOpen), key (Key), clock (Clock), umbrella (Umbrella), book (Book),
+pencil (Pencil), letter (Mail), gift (Gift), camera (Camera), phone (Phone),
+bell (Bell), backpack (Backpack), glasses (Glasses), crown (Crown),
+magic wand (WandSparkles), flashlight (Flashlight), guitar (Guitar).
+Food & drink: apple (Apple), banana (Banana), carrot (Carrot),
+cherry (Cherry), lemon (Citrus), croissant (Croissant), cake (Cake),
+cookie (Cookie), egg (Egg), coffee (Coffee), pizza (Pizza),
+ice cream (IceCreamCone).
+Travel: bicycle (Bike), car (Car), bus (Bus), train (TrainFront),
+sailboat (Sailboat), airplane (Plane), rocket (Rocket), map (Map),
+compass (Compass), suitcase (Luggage).
+
+Icon rule: before wiring, verify every icon name exists in the installed
+lucide-react version (names drift, e.g. Wand2→WandSparkles,
+IceCream→IceCreamCone, Train→TrainFront). If a name is missing, use the
+closest existing lucide icon with the same meaning; if none fits, delete that
+object from the catalog. Never reuse an unrelated icon as a stand-in.
+Registry: one shared TypeScript file with id, label, category, and aliases
+(plurals and synonyms, e.g. dog → dogs, puppy; sun → sunny, sunlight), plus a
+client-only map from id to icon component. The server validates against this
+registry and never accepts labels or SVG from the client.
+
+4. LAYOUT AND LOOK
+Desktop targets 1440×900 and 1280×800 with no horizontal scrolling; stack the
+columns as a usable narrow-screen fallback (no mobile app or PWA).
+- Header: small wordmark + tagline left; "How it works" (three-step popover)
+  and a secondary "Reset" right.
+- Main: ~300px object shelf + flexible story panel, 24px gap.
+- Shelf: heading "Pick your ingredients", search field, category chips,
+  3–4 column grid of labeled icon buttons, internal scroll, and a
+  "No objects match" message.
+- Story panel: heading "What happens when these meet?", a softly outlined
+  oval bowl inside a fixed-size stage, empty text "Drag in 3–10 objects, or
+  click them to add." Selected icons snap into readable slots (no overlap, no
+  freeform placement), each with a labeled remove button. Show the count,
+  e.g. "3 of 10 ingredients". "Surprise me" picks five distinct objects
+  locally, no AI call.
+- Below the bowl: three mood cards with radio semantics, default Calm.
+  Calm "A gentle little escape" · Funny "A small unexpected laugh" ·
+  Mystery "A curious turn of events". A quiet "English" label (not a fake
+  dropdown). Primary button "Make my story" with a play icon; below three
+  objects it is disabled and reads "Add 2 more objects" (count adjusts).
+- Result card: short title, full story text, an "AI-generated fiction" note
+  (or a "Demo story" label), and Play/Replay, Stop, New story, Copy text.
+  Once a result exists there is exactly one generation action: New story.
+
+Visual: light theme only. Page #FAF9F6, panels #FFFFFF, text #202432,
+secondary text #5E6473, accent #5B4BDB, accent surface #F0EDFF, dividers
+#E7E5EC, with stronger borders on controls where contrast needs it. System
+sans-serif, 16–20px panel radii, generous spacing, restrained shadows, thin
+consistent icons, color used sparingly: selection is shown with a checkmark
+and label, never color alone. Visible focus rings, a label on every control,
+prefers-reduced-motion respected, brief purposeful transitions. It should
+feel like a polished creative tool.
+
+5. INTERACTION AND STATE
+- Click and drag both add; adding an object already in the bowl is a no-op;
+  at ten, show "The bowl is full (10 of 10)". Drops outside the stage do
+  nothing. Keyboard: tiles are buttons; Enter/Space adds.
+- Removing an ingredient updates the count and button state immediately.
+- Changing ingredients or mood stops speech, cancels in-flight requests,
+  clears the result so an old story is never shown against a new selection,
+  and does not auto-generate.
+- While generating: a small loader and the text "Finding the thread…", no
+  percentages, the button disabled, Reset still available. Use AbortController
+  plus an incrementing request id and ignore any response whose id is stale.
+- Reset: stop speech, abort requests, clear bowl, result, search and error,
+  return mood to Calm; a late response must not repopulate the page.
+- Keep the last two stories in tab memory only (no persistence).
+- Copy text copies "Title\n\nStory", with a select-the-text fallback when the
+  clipboard API is unavailable.
+
+6. STORY API
+POST /api/story accepts exactly: { objectIds: 3–10 unique registry ids,
+mood: "calm" | "funny" | "mystery", recentOpenings?: up to 2 strings of ≤160
+chars }. Reject anything else with 400; body limit 8 KB. recentOpenings are
+untrusted quoted text to steer away from, never instructions.
+The server chooses a variation and names it in the prompt: one focal object,
+a perspective (close third person, first person, or a passing onlooker), and
+an ending style that fits the mood.
+Call Groq with response_format { type: "json_schema", json_schema: { name:
+"story", strict: true, schema: { title: string, story: string } } } — this
+model supports strict mode. If the API rejects the response_format, retry
+once with { type: "json_object" } and the word "JSON" in the prompt.
+Temperature about 0.9. Timeout 20 seconds via AbortController.
+Validate server-side: parse the JSON; story word count 45–65 (title
+excluded); every selected object is mentioned, checked case-insensitively by
+whether any story word starts with the object's label or one of its aliases
+(≥3 characters). This is a heuristic that can produce false positives;
+document that in a code comment. If anything fails, make exactly ONE repair
+call that quotes the problem ("too long: 78 words", "missing: lantern, key").
+If the repair also fails, return error code STORY_INVALID and keep the user's
+ingredients intact on the client.
+Success response: { id, objectIds, mood, language: "en", title, story,
+wordCount, source: "ai" | "demo" }. Errors: { code, message } with codes
+NO_API_KEY, BAD_REQUEST, RATE_LIMITED (our limiter or a 429 from Groq),
+MODEL_UNAVAILABLE, PROVIDER_REFUSED, TIMEOUT, STORY_INVALID. Friendly
+messages; never echo raw provider errors or credentials. Rate limit
+in-memory, 20 requests per 10 minutes per IP; on Replit trust only the
+platform's proxy header; document that in-memory limits reset on restart
+and are not a spending cap.
+
+7. STORY-WRITING INSTRUCTIONS (system prompt, verbatim)
+"Write a tiny, complete fictional story for spoken narration. Aim for 50–60
+words, excluding the title; 45–65 is acceptable. Include every selected
+object naturally, using its label or a close variant. Let two or three
+objects drive the action and the rest support it; do not merely list them.
+Give the story a concrete situation, a change, and a satisfying final beat.
+Calm is warm and unhurried. Funny lands a specific comic payoff. Mystery
+has a curious reveal without horror. Avoid moral lessons, inspirational
+endings, 'Once upon a time', preambles, hashtags, and explaining how the
+story was written. Introduce few extra props. No explicit sexual content,
+graphic violence, hateful content, or dangerous instructions. Return only
+the requested JSON with a title of at most eight words and the story."
+
+8. NARRATION (useSpeech)
+Load voices with getVoices() and the voiceschanged event; pick an English
+voice automatically (prefer a local default). Speak the story sentence by
+sentence as a queue of utterances; this avoids the long-utterance cutoff
+some browsers have. Rate about 0.95, volume 1. Cancel any existing speech
+before starting new speech. Handle start, end and error; clean up on
+unmount; ignore callbacks from stale utterances. After generation, start
+narration as part of the user's click flow; if the browser blocks it, show
+"Your story is ready. Press Play to listen." The text is always usable
+without speech. Present "about 20–30 seconds" as an estimate, with no
+countdown and no animation that implies real audio progress. No voice
+selector in v1.
+
+9. DEMO MODE
+The app starts and works with no key. GET /api/status returns { demo: true }
+when GROQ_API_KEY is missing or DEMO_MODE is "true"; the client then shows a
+banner "Demo mode: prepared example stories". Fixtures: one five-object
+selection — umbrella, cat, lamp, letter, rain — with one prepared story per
+mood, each actually using all five objects, labeled "Demo story". "Try the
+example" loads that exact selection. Any other selection in demo shows
+"Live stories need the owner's Groq key. Try the example set to hear one."
+In live mode, provider failures show an error and never fall back to a
+canned story.
+
+10. GUARDRAILS
+- GROQ_API_KEY lives on the server only: never in client code, VITE_
+  variables, localStorage, responses, logs, or a committed .env.
+- Render stories as plain text, never HTML.
+- Only the fixed endpoint and allowlisted ids; no arbitrary prompts or URLs.
+- Not in v1: accounts, database, payments, image generation or recognition,
+  uploads, microphone, analytics, multiplayer, a second AI provider, cloud
+  TTS, paid tiers, or billing hooks. Do not change providers or models.
+- No autoplay on page load. No fake progress indicators.
+- No dark panels, neon, glass effects, full-screen gradients, stock photos,
+  emoji artwork, decorative blobs, marketing hero, or another company's
+  branding.
+- Include a short About/Privacy note: in live mode the selected object names
+  and generated stories are sent to the configured AI provider; speech uses
+  the device's own voices.
+
+11. TESTS AND CHECKS
+Vitest with a mocked fetch: registry integrity (unique ids, an icon for
+every id), payload validation, word-count and coverage checks,
+exactly-one-repair behavior plus 429 handling, and stale-response handling
+in the reducer. Actually run the build, type-check, and tests. Then check
+manually: every icon renders, search and categories, click/drag/keyboard,
+all three moods, 3-, 5- and 10-object selections, Replay makes zero
+requests, New story keeps ingredients, Reset during generation and during
+speech, the blocked-autoplay message, no-key demo, and no secret in the
+built bundle (grep the dist folder). Report only what you actually ran, and
+list anything blocked by missing credentials.
+
+12. DELIVER
+Source, lockfile, run configuration for this platform, .env.example, tests,
+the lucide license notice, and a concise README covering: how to run, where
+to add GROQ_API_KEY, how to change GROQ_MODEL, how demo mode works, where
+the catalog and story prompt live, how narration works, and troubleshooting
+for missing key, 429, no English voice, and model unavailable. Note that
+consistent audio across devices would need a hosted narrator later.
+Finish with a short summary: what works, which tests ran, known
+limitations, and the single setup step I must perform.

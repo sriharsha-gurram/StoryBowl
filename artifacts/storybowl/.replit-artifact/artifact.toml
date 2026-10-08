@@ -1,0 +1,28 @@
+kind = "web"
+previewPath = "/"
+title = "StoryBowl"
+description = "A browser storytelling toy for adult testers. Combine everyday objects into tiny narrated stories with calm, funny, or mystery moods."
+version = "1.0.0"
+id = "artifacts/storybowl"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 18762
+
+[services.development]
+run = "pnpm --filter @workspace/storybowl run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/storybowl", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/storybowl/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "18762"
+BASE_PATH = "/"

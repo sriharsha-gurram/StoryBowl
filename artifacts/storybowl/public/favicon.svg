@@ -1,0 +1,8 @@
+<!-- Draws a small bowl as StoryBowl's browser-tab icon. -->
+<!-- Uses the app accent instead of unrelated template branding. -->
+<svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect width="64" height="64" rx="16" fill="#F0EDFF"/>
+<path d="M12 28h40c-2 15-10 23-20 23S14 43 12 28Z" stroke="#5B4BDB" stroke-width="3"/>
+<ellipse cx="32" cy="28" rx="20" ry="5" stroke="#5B4BDB" stroke-width="3"/>
+<path d="m32 9 2 5 5 2-5 2-2 5-2-5-5-2 5-2 2-5Z" fill="#5B4BDB"/>
+</svg>
