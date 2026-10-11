@@ -1,2 +1,3 @@
 - [Story direction](story-direction.md) — everyday Indian backdrops and simple English; narration should sound natural.
 - [Offline regression checks](offline-regression-checks.md) — interaction verification must not consume generation credits or depend on device voices.
+- [Course submission](course-submission.md) — the owner intends to submit StoryBowl for course grading.
