@@ -10,10 +10,10 @@ export function ObjectTile({ id, label, picked, onAdd }: { id: string; label: st
     <button type="button" draggable aria-pressed={picked} aria-label={picked ? `${label}, in your collection` : `Add ${label}`}
       data-testid={`tile-${id}`} onClick={() => onAdd(id)}
       onDragStart={e => { e.dataTransfer.setData("text/plain", id); e.dataTransfer.effectAllowed = "copy"; }}
-      className={`relative flex flex-col items-center gap-1.5 rounded-xl border px-1 py-3 text-xs capitalize transition-all hover:-translate-y-0.5 hover:border-[#B9C3F5] hover:bg-[#F3F5FF] ${picked ? "border-[#3F5BE0] bg-[#EEF1FF] font-semibold text-[#2A3FB0]" : "border-[#E8E4DA] bg-white"}`}>
+      className={`relative flex flex-col items-center gap-1.5 rounded-xl border px-1 py-3 text-xs capitalize transition-[transform,background-color,border-color] hover:-translate-y-0.5 active:scale-95 hover:border-[#B9C3F5] hover:bg-[#F3F5FF] ${picked ? "sb-pop border-[#3F5BE0] bg-[#EEF1FF] font-semibold text-[#2A3FB0]" : "border-[#E8E4DA] bg-white"}`}>
       <Icon className="h-6 w-6" strokeWidth={1.5} aria-hidden />
       <span className="max-w-full truncate px-1">{label}</span>
-      {picked && <Check className="absolute right-1.5 top-1.5 h-3.5 w-3.5 text-[#3F5BE0]" aria-hidden />}
+      {picked && <Check className="sb-pop absolute right-1.5 top-1.5 h-3.5 w-3.5 text-[#3F5BE0]" aria-hidden />}
     </button>
   );
 }

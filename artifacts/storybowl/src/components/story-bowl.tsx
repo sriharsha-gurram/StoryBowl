@@ -19,10 +19,10 @@ export function StoryBowl({ ids, notice, onAdd, onRemove }: { ids: string[]; not
           {ids.map(id => {
             const o = catalog.find(c => c.id === id)!; const Icon = iconMap[id]!;
             return (
-              <li key={id} className="relative flex h-[84px] flex-col items-center justify-center gap-1 rounded-xl border border-[#DDE2F8] bg-white text-xs capitalize shadow-[0_1px_2px_rgba(30,35,60,0.06)]" data-testid={`slot-${id}`}>
-                <Icon className="h-6 w-6 text-[#2A3FB0]" strokeWidth={1.5} aria-hidden /><span className="max-w-full truncate px-1">{o.label}</span>
+              <li key={id} className="sb-pop relative flex h-[96px] flex-col items-center justify-end gap-1 rounded-xl pb-2.5 border border-[#DDE2F8] bg-white text-xs capitalize shadow-[0_1px_2px_rgba(30,35,60,0.06)]" data-testid={`slot-${id}`}>
+                <Icon className="h-6 w-6 shrink-0 text-[#2A3FB0]" strokeWidth={1.5} aria-hidden /><span className="max-w-full truncate px-1">{o.label}</span>
                 <button type="button" aria-label={`Remove ${o.label}`} onClick={() => onRemove(id)} data-testid={`remove-${id}`}
-                  className="absolute -right-1.5 -top-1.5 rounded-full border border-[#9A9DA8] bg-white p-0.5 hover:bg-[#F6F3EA]"><X className="h-3 w-3" aria-hidden /></button>
+                  className="group absolute right-0 top-0 grid h-11 w-11 place-items-center rounded-xl"><span className="grid h-6 w-6 place-items-center rounded-full border border-[#9A9DA8] bg-white group-hover:bg-[#F6F3EA]"><X className="h-3.5 w-3.5" aria-hidden /></span></button>
               </li>
             );
           })}

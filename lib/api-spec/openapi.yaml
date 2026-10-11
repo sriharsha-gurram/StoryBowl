@@ -91,7 +91,7 @@ components:
         language: { type: string, enum: [en] }
         title: { type: string }
         story: { type: string }
-        wordCount: { type: integer, minimum: 100, maximum: 150 }
+        wordCount: { type: integer, minimum: 200, maximum: 300 }
         source: { type: string, enum: [ai, demo] }
     StoryError:
       type: object

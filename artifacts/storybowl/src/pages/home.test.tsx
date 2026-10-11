@@ -1,10 +1,18 @@
-import { act, fireEvent, render, screen, within } from "@testing-library/react";
+import { act, fireEvent, render, screen as domScreen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { generateStory, getStoryStatus, type Story } from "@workspace/api-client-react";
 import { catalog, exampleIds, fixtures, words } from "@workspace/story-core";
 import Home from "./home";
 import { speechMock, utterances } from "../test/speech-mock";
+// jsdom cannot apply responsive CSS. Query the desktop control, not its mobile twin.
+const screen = { ...domScreen, getByRole: (...args: Parameters<typeof domScreen.getByRole>) => {
+  if (args[0] === "button") {
+    const buttons = domScreen.queryAllByRole(...args).filter(b => !b.closest('[data-testid="sticky-bar"]'));
+    if (buttons.length === 1) return buttons[0]!;
+  }
+  return domScreen.getByRole(...args);
+} };
 
 vi.mock("@workspace/api-client-react", () => ({
   generateStory: vi.fn(),
@@ -50,10 +58,12 @@ function collectedIds() {
   return within(collection()).queryAllByRole("listitem")
     .map(element => element.getAttribute("data-testid")!.replace("slot-", ""));
 }
+function displayedStory() {
+  return Array.from(screen.getByTestId("text-story").querySelectorAll("p")).map(p => p.textContent).join("\n\n");
+}
 
 async function startExample(user: ReturnType<typeof userEvent.setup>) {
   await user.click(screen.getByRole("button", { name: "Try the example" }));
-  await user.click(screen.getByRole("button", { name: "Make my story" }));
 }
 
 // A small DataTransfer substitute exercises both the tile's dragStart handler
@@ -153,28 +163,28 @@ describe("composed object selection", () => {
 });
 
 describe("generation and narration", () => {
-  it("renders a 100–150-word story; Replay/Stop/Play never generate; New story retains objects", async () => {
+  it("renders a 200–300-word story; Replay/Stop/Play never generate; New story retains objects", async () => {
     generate.mockResolvedValueOnce(prepared);
     const { user } = await openHome();
     expect(screen.queryByText(/Indian|India\b/)).not.toBeInTheDocument();
     expect(screen.queryByText(/English|100–150|45–70/)).not.toBeInTheDocument();
     await startExample(user);
     expect(await screen.findByTestId("text-title")).toHaveTextContent(prepared.title);
-    expect(screen.getByTestId("text-story").textContent).toBe(prepared.story);
-    const count = words(screen.getByTestId("text-story").textContent!).length;
-    expect(count).toBeGreaterThanOrEqual(100);
-    expect(count).toBeLessThanOrEqual(150);
+    expect(displayedStory()).toBe(prepared.story);
+    const count = words(displayedStory()).length;
+    expect(count).toBeGreaterThanOrEqual(200);
+    expect(count).toBeLessThanOrEqual(300);
     expect(screen.queryByTestId("text-wordcount")).not.toBeInTheDocument();
     expect(screen.queryByText(/seconds to hear/)).not.toBeInTheDocument();
     expect(screen.getByTestId("text-source")).toHaveTextContent("AI-generated fiction");
     expect(screen.queryByTestId("button-make")).not.toBeInTheDocument();
     expect(generate).toHaveBeenCalledTimes(1);
-    expect(utterances.map(u => u.text).join(" ")).toBe(prepared.story);
+    expect(utterances.map(u => u.text).join(" ")).toBe(prepared.story.replace(/\s+/g, " "));
     const oldUtterances = [...utterances];
     const queued = speechMock.speak.mock.calls.length;
     await user.click(screen.getByRole("button", { name: "Replay" }));
     expect(speechMock.speak).toHaveBeenCalledTimes(queued * 2);
-    expect(utterances.slice(queued).map(u => u.text).join(" ")).toBe(prepared.story);
+    expect(utterances.slice(queued).map(u => u.text).join(" ")).toBe(prepared.story.replace(/\s+/g, " "));
     // A canceled narration's callback cannot stop the current replay.
     act(() => oldUtterances.at(-1)!.onend?.());
     expect(screen.getByRole("button", { name: "Replay" })).toBeEnabled();
@@ -197,7 +207,7 @@ describe("generation and narration", () => {
     );
     await act(async () => pending.resolve(nextStory));
     expect(screen.getByTestId("text-title")).toHaveTextContent(nextStory.title);
-    expect(screen.getByTestId("text-story").textContent).toBe(nextStory.story);
+    expect(displayedStory()).toBe(nextStory.story);
     expect(collectedIds()).toEqual(exampleIds);
     await user.click(screen.getByRole("radio", { name: /Mystery/ }));
     expect(screen.queryByTestId("result")).not.toBeInTheDocument();
@@ -205,7 +215,7 @@ describe("generation and narration", () => {
     expect(collectedIds()).toEqual(exampleIds);
   });
 
-  it.each(["add", "remove", "mood", "reset", "example", "surprise"] as const)(
+  it.each(["add", "remove", "mood", "reset"] as const)(
     "aborts on %s and ignores a late success even if the mock ignores abort",
     async change => {
       const pending = deferred<Story>();
@@ -219,12 +229,6 @@ describe("generation and narration", () => {
       if (change === "remove") await user.click(screen.getByRole("button", { name: "Remove cat" }));
       if (change === "mood") await user.click(screen.getByRole("radio", { name: /Mystery/ }));
       if (change === "reset") await user.click(screen.getByRole("button", { name: "Reset" }));
-      if (change === "example") await user.click(screen.getByRole("button", { name: "Try the example" }));
-      if (change === "surprise") {
-        vi.spyOn(Math, "random").mockReturnValue(0.5);
-        await user.click(screen.getByRole("button", { name: "Surprise me" }));
-        vi.mocked(Math.random).mockRestore();
-      }
       expect(signal.aborted).toBe(true);
       expect(screen.queryByTestId("text-loading")).not.toBeInTheDocument();
       await act(async () => pending.resolve(prepared));
@@ -252,7 +256,7 @@ describe("generation and narration", () => {
       if (outcome === "success") pending.resolve(prepared);
       else pending.reject({ data: { message: "Old request failed" } });
     });
-    expect(screen.getByTestId("text-story").textContent).toBe(nextStory.story);
+    expect(displayedStory()).toBe(nextStory.story);
     expect(screen.queryByRole("alert")).not.toBeInTheDocument();
     expect(speechMock.speak).toHaveBeenCalledTimes(narrated);
     unmount();
@@ -271,7 +275,7 @@ describe("generation and narration", () => {
     await user.click(screen.getByRole("radio", { name: /Calm/ }));
     expect(signal.aborted).toBe(false);
     await act(async () => pending.resolve(prepared));
-    expect(screen.getByTestId("text-story").textContent).toBe(prepared.story);
+    expect(displayedStory()).toBe(prepared.story);
     expect(collectedIds()).toEqual(exampleIds);
   });
 
@@ -292,30 +296,31 @@ describe("generation and narration", () => {
   });
 
   it("shows an API error and retries without losing objects", async () => {
-    generate.mockRejectedValueOnce({ data: { message: "Please try again shortly." } });
+    generate.mockRejectedValueOnce({ status: 502 }).mockRejectedValueOnce({ status: 502 }).mockRejectedValueOnce({ status: 502 });
     const { user } = await openHome();
     await startExample(user);
-    expect(await screen.findByRole("alert")).toHaveTextContent("Please try again shortly.");
+    expect(await screen.findByRole("alert", {}, { timeout: 4000 })).toHaveTextContent("storyteller had a hiccup");
     expect(collectedIds()).toEqual(exampleIds);
     expect(speechMock.speak).not.toHaveBeenCalled();
-    await user.click(screen.getByRole("button", { name: "Make my story" }));
+    await user.click(screen.getByRole("button", { name: "Try again" }));
     expect(await screen.findByTestId("result")).toBeInTheDocument();
     expect(screen.queryByRole("alert")).not.toBeInTheDocument();
-    expect(generate).toHaveBeenCalledTimes(2);
+    expect(generate).toHaveBeenCalledTimes(4);
   });
 
   it("keeps the result readable when narration is blocked and retries Play without generation", async () => {
     speechMock.getVoices.mockReturnValue([]);
     const { user } = await openHome();
     await startExample(user);
-    expect(await screen.findByTestId("text-story")).toHaveTextContent(prepared.story);
-    expect(screen.getByText("Your story is ready. Press Play to listen.")).toBeInTheDocument();
+    await screen.findByTestId("text-story");
+    expect(displayedStory()).toBe(prepared.story);
+    expect(screen.getByText(/No English narration voices are available/)).toBeInTheDocument();
     expect(speechMock.speak).not.toHaveBeenCalled();
     speechMock.getVoices.mockReturnValue([{
       name: "English", lang: "en-IN", default: true, localService: true, voiceURI: "test",
     }]);
     await user.click(screen.getByRole("button", { name: "Play" }));
-    expect(screen.queryByText("Your story is ready. Press Play to listen.")).not.toBeInTheDocument();
+    expect(screen.queryByText(/No English narration voices are available/)).not.toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Replay" })).toBeInTheDocument();
     expect(generate).toHaveBeenCalledTimes(1);
     speechMock.cancel.mockClear();

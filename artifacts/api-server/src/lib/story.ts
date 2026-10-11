@@ -4,10 +4,11 @@ import { randomInt } from "node:crypto";
 import { catalog, fixtures, MIN_STORY_WORDS, MAX_STORY_WORDS, storyProblems, type StoryPayload } from "@workspace/story-core";
 
 export const SYSTEM_PROMPT = [
-  `Write a short, complete fictional story for spoken narration. Aim for 120–135 words, excluding the title; ${MIN_STORY_WORDS}–${MAX_STORY_WORDS} words is required. Use the extra space for a believable situation, a small complication, and an earned ending, not filler.`,
+  `Write a satisfying fictional story for spoken narration. Aim for 230–270 words, excluding the title; ${MIN_STORY_WORDS}–${MAX_STORY_WORDS} words is required. Write exactly 3 or 4 short paragraphs separated by two newline characters. Give it a real arc: a specific setup, a complication or twist, and an earned payoff. Use the space for actions and consequences, not filler.`,
+  "The payoff must resolve the original complication, not introduce another unexplained puzzle. In Mystery, state the concrete answer: what happened, who caused it, and why; the clues must logically support that answer. Never end with vague claims about 'the truth', 'a secret', or 'the story living on'. In Funny, show the consequence of the mistake that earns the laugh. In Calm, show a small change in a person's situation. End with an action or plain spoken line, not a summary of how the objects came together.",
   "Set every story in an everyday Indian backdrop. Use one clear, believable detail from daily life in India, such as a neighbourhood flat, a school courtyard, a local bus stop, a market lane, a coastal town, or a hill town. Use Indian names when a named person is needed. India includes modern cities, small towns, and villages; vary the setting and do not rely on stereotypes, accents, poverty, religion, or festivals to make it Indian.",
   "Write in simple, natural English that is easy to understand when heard once. Prefer common words, short sentences, and clear actions. Use complete, grammatical sentences with natural articles. Keep dialogue brief and conversational. Avoid fancy vocabulary, flowery descriptions, obscure idioms, abstract symbolism, poetic metaphors, and unexplained Hindi or other regional-language words. Keep English-only narration. Say 'the rain stopped' rather than 'the clouds surrendered their sorrow'. Do not make streets hum, rain forget, or objects symbolise feelings.",
-  "Include every selected object naturally, using its label or a close variant. Let two or three objects drive the action and the rest support it; do not merely list them. Keep events realistic and interesting. Objects should behave like normal objects and animals like normal animals. An unusual selected object can be a toy, a picture, a stage prop, or something a person talks about when that makes sense. Do not make animals write letters or add unexplained magic. Mention the chosen Indian location clearly.",
+  "Include every selected object naturally, using its label or a close variant. Every object must have a meaningful causal role: a tool someone uses, an obstacle, a clue, a reason for a decision, or part of the payoff. Plan these roles before writing. Do not merely list objects, place them in scenery, or add a last-minute sentence just to mention one. Removing any chosen object should change at least one event. Keep events realistic and interesting. Objects should behave like normal objects and animals like normal animals. An unusual selected object can be a toy, a picture, or a stage prop that a person actually uses in the plot. Do not make animals write letters or add unexplained magic. Mention the chosen Indian location clearly.",
   "Give the story a concrete situation, a change, and a satisfying final beat. Keep the cause and effect easy to follow. Calm is warm and unhurried, with a small helpful action rather than atmospheric description. Funny lands a specific comic payoff caused by an action or misunderstanding, not merely someone laughing. Mystery has a curious reveal without horror; introduce one clear question early, then explain that same question in the ending instead of ending with a confusing poetic image or an unrelated discovery.",
   "Avoid moral lessons, inspirational endings, 'Once upon a time', preambles, hashtags, and explaining how the story was written. Do not explain the joke or label the story structure with phrases such as 'The reversal', 'The twist', or 'The moral'. Show what happened and end with an action or brief dialogue. Introduce few extra props. No explicit sexual content, graphic violence, hateful content, or dangerous instructions.",
   "Return only the requested JSON with a simple title of at most eight words and the story.",
@@ -18,9 +19,9 @@ const messages: Record<ErrorCode, string> = {
   BAD_REQUEST: "Choose 3–10 different objects and one of the three moods.",
   RATE_LIMITED: "Too many stories just now. Please wait a little and try again.",
   MODEL_UNAVAILABLE: "The story model is unavailable. The owner may need to check GROQ_MODEL or the Groq key.",
-  PROVIDER_REFUSED: "The story provider could not complete this request. Try again with different objects.",
-  TIMEOUT: "That story took too long. Your objects are safe—please try again.",
-  STORY_INVALID: "The story did not fit the objects this time. Please try a new story.",
+  PROVIDER_REFUSED: "Our storyteller had a hiccup. Your objects are safe. Please try again.",
+  TIMEOUT: "Our storyteller took a little too long. Your objects are safe. Please try again.",
+  STORY_INVALID: "Our storyteller couldn't finish a complete story this time. Your objects are safe. Please try again.",
 };
 export class StoryFailure extends Error {
   constructor(public code: ErrorCode, public status = 502) { super(messages[code]); }
@@ -81,7 +82,7 @@ export async function createStory(payload: StoryPayload, options: {
         jsonFallback = true;
         return call();
       }
-      if ([401, 403, 404, 503].includes(response.status)) throw new StoryFailure("MODEL_UNAVAILABLE");
+      if ([401, 403, 404].includes(response.status)) throw new StoryFailure("MODEL_UNAVAILABLE");
       if (/model_not_found|model_decommissioned|model.*(not found|unavailable|does not exist|not supported)/i.test(detail)) throw new StoryFailure("MODEL_UNAVAILABLE");
       throw new StoryFailure("PROVIDER_REFUSED");
     }
@@ -100,7 +101,7 @@ export async function createStory(payload: StoryPayload, options: {
       if (attempt === 1) throw new StoryFailure("STORY_INVALID");
       messages.push({ role: "assistant", content }, {
         role: "user",
-        content: `Repair the preceding JSON story exactly once. Validation problems (quoted data): ${JSON.stringify(problems)}. Include every object, use ${MIN_STORY_WORDS}–${MAX_STORY_WORDS} words, preserve the realistic Indian setting and simple English, and return only JSON with title and story.`,
+        content: `Repair the preceding JSON story exactly once. Validation problems (quoted data): ${JSON.stringify(problems)}. Give every object a meaningful role, use ${MIN_STORY_WORDS}–${MAX_STORY_WORDS} words in 3–4 paragraphs separated by blank lines, preserve the realistic Indian setting and simple English, and return only JSON with title and story.`,
       });
       content = await call();
     }

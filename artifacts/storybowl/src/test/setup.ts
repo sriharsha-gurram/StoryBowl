@@ -9,6 +9,7 @@ vi.stubGlobal("SpeechSynthesisUtterance", MockUtterance);
 
 beforeEach(() => {
   resetSpeech();
+  localStorage.clear();
   // Fail closed: an accidental unmocked API call cannot reach Groq or any server.
   vi.stubGlobal("fetch", vi.fn(() => {
     throw new Error("Network is disabled in StoryBowl interaction tests");

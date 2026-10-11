@@ -15,7 +15,8 @@ export interface State {
 export type Action =
   | { type: "add"; id: string } | { type: "remove"; id: string } | { type: "mood"; mood: Mood }
   | { type: "query"; query: string } | { type: "category"; category: string }
-  | { type: "set"; ids: string[] } | { type: "reset" } | { type: "start" }
+  | { type: "set"; ids: string[] } | { type: "reset" } | { type: "start"; ids?: string[] }
+  | { type: "open"; story: Story }
   | { type: "status-error"; message: string }
   | { type: "success"; requestId: number; story: Story } | { type: "failure"; requestId: number; message: string };
 
@@ -43,7 +44,8 @@ export function reducer(s: State, a: Action): State {
     case "category": return { ...s, category: a.category };
     case "reset": return { ...initialState, history: s.history, requestId: s.requestId + 1 };
     case "status-error": return { ...s, error: a.message };
-    case "start": return { ...s, phase: "loading", error: null, requestId: s.requestId + 1 };
+    case "start": return { ...s, ids: a.ids ?? s.ids, result: a.ids ? null : s.result, notice: null, phase: "loading", error: null, requestId: s.requestId + 1 };
+    case "open": return { ...s, ids: a.story.objectIds, mood: a.story.mood, result: a.story, phase: "ready", error: null, notice: null, requestId: s.requestId + 1 };
     case "success":
       if (a.requestId !== s.requestId || s.phase !== "loading") return s;
       return { ...s, phase: "ready", result: a.story, history: [...s.history, a.story].slice(-2) };

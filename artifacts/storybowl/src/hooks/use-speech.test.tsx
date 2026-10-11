@@ -28,7 +28,8 @@ describe("browser narration with deterministic synthesis", () => {
     speechMock.getVoices.mockReturnValue([]);
     const { result } = renderHook(useSpeech);
     act(() => result.current.speak("A story."));
-    expect(result.current.blocked).toBe(true);
+    expect(result.current.noVoices).toBe(true);
+    expect(result.current.message).toContain("No English narration voices");
     expect(result.current.speaking).toBe(false);
     expect(speechMock.speak).not.toHaveBeenCalled();
   });

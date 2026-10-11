@@ -28,8 +28,8 @@ export const GenerateStoryBody = zod.object({
   "recentOpenings": zod.array(zod.string().max(generateStoryBodyRecentOpeningsItemMax)).max(generateStoryBodyRecentOpeningsMax).optional()
 })
 
-export const generateStoryResponseWordCountMin = 100;
-export const generateStoryResponseWordCountMax = 150;
+export const generateStoryResponseWordCountMin = 200;
+export const generateStoryResponseWordCountMax = 300;
 
 
 

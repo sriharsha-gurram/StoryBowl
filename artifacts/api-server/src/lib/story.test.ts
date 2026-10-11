@@ -6,6 +6,10 @@ import { createStory, StoryLimiter, SYSTEM_PROMPT } from "./story";
 const payload = { objectIds: exampleIds, mood: "calm" as const };
 const response = (value: unknown) => new Response(JSON.stringify({ choices: [{ message: { content: JSON.stringify(value) } }] }), { status: 200 });
 const options = (fetcher: typeof fetch) => ({ key: "test-placeholder", model: "openai/gpt-oss-20b", fetcher });
+const countedStory = (n: number) => {
+  const first = Math.floor(n / 3);
+  return [first, first, n - first * 2].map(count => "cat ".repeat(count).trim()).join("\n\n");
+};
 describe("shared registry and validation", () => {
   it("has 76 distinct, categorized objects", () => {
     expect(catalog).toHaveLength(76);
@@ -24,18 +28,22 @@ describe("shared registry and validation", () => {
   it("validates all demo moods, word count, title and coverage", () => {
     for (const story of Object.values(fixtures)) expect(storyProblems(story,exampleIds)).toEqual([]);
     expect(storyProblems({title:"A",story:"cat"},exampleIds)).toContain("too short: 1 words");
-    expect(storyProblems({title:"A",story:"cat ".repeat(178)},exampleIds)).toContain("too long: 178 words");
+    expect(storyProblems({title:"A",story:"cat ".repeat(350)},exampleIds)).toContain("too long: 350 words");
     expect(storyProblems(fixtures.calm,["rocket"])).toContain("missing: rocket");
     expect(storyProblems(null,exampleIds)).toEqual(["invalid JSON object"]);
     expect(storyProblems({ ...fixtures.calm, story: `${fixtures.calm.story} }` }, exampleIds)).toContain("stray JSON closing character in story");
   });
-  it("enforces inclusive 100–150 word boundaries excluding the title", () => {
-    for (const n of [100, 125, 150]) expect(storyProblems({ title: "A Simple Cat Story", story: "cat ".repeat(n) }, ["cat"])).toEqual([]);
-    expect(storyProblems({ title: "Cat", story: "cat ".repeat(99) }, ["cat"])).toEqual(["too short: 99 words"]);
-    expect(storyProblems({ title: "Cat", story: "cat ".repeat(151) }, ["cat"])).toEqual(["too long: 151 words"]);
+  it("enforces inclusive 200–300 word boundaries excluding the title", () => {
+    for (const n of [200, 250, 300]) expect(storyProblems({ title: "A Simple Cat Story", story: countedStory(n) }, ["cat"])).toEqual([]);
+    expect(storyProblems({ title: "Cat", story: countedStory(199) }, ["cat"])).toEqual(["too short: 199 words"]);
+    expect(storyProblems({ title: "Cat", story: countedStory(301) }, ["cat"])).toEqual(["too long: 301 words"]);
+  });
+  it("requires three or four paragraphs", () => {
+    expect(storyProblems({ title: "Cat", story: countedStory(240).replaceAll("\n\n", " ") }, ["cat"])).toContain("use 3–4 paragraphs separated by blank lines: 1 found");
+    expect(storyProblems({ title: "Cat", story: Array(5).fill("cat ".repeat(48)).join("\n\n") }, ["cat"])).toContain("use 3–4 paragraphs separated by blank lines: 5 found");
   });
   it("does not misrepresent structural validity as narrative quality", () => {
-    const unrealistic = { title: "Magic", story: `In Pune the cat wrote a letter and the umbrella flew away. ${"lamp rain ".repeat(49)}` };
+    const unrealistic = { ...fixtures.calm, story: fixtures.calm.story.replace("Meera held the umbrella low", "The cat wrote a letter") };
     expect(storyProblems(unrealistic, exampleIds)).toEqual([]);
   });
 });
@@ -51,7 +59,7 @@ describe("Groq generation", () => {
     expect(body.messages[0].content).toBe(SYSTEM_PROMPT);
     expect(body.messages[0].content).toContain("everyday Indian backdrop");
     expect(body.messages[0].content).toContain("simple, natural English");
-    expect(body.messages[0].content).toContain("100–150 words is required");
+    expect(body.messages[0].content).toContain("200–300 words is required");
     expect(body.messages[0].content).toContain("Keep events realistic and interesting");
     expect(body.messages.find((m: {role: string}) => m.role === "user").content).toContain("Indian setting:");
   });
@@ -68,7 +76,7 @@ describe("Groq generation", () => {
     await createStory(payload,options(mock));
     expect(mock).toHaveBeenCalledTimes(2);
     expect(mock.mock.calls[1]![1]!.body).toContain("too short");
-    expect(mock.mock.calls[1]![1]!.body).toContain("100–150 words");
+    expect(mock.mock.calls[1]![1]!.body).toContain("200–300 words");
   });
   it("returns STORY_INVALID after one failed repair", async () => {
     const mock=vi.fn<typeof fetch>().mockImplementation(async()=>response({title:"Short",story:"cat"}));

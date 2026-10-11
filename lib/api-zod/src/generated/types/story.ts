@@ -17,8 +17,8 @@ export interface Story {
   title: string;
   story: string;
   /**
-     * @minimum 100
-     * @maximum 150
+     * @minimum 200
+     * @maximum 300
      */
   wordCount: number;
   source: StorySource;

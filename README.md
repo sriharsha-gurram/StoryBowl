@@ -20,7 +20,7 @@ Add **GROQ_API_KEY** in the project's **Tools → Secrets**, then restart the AP
 
 ## Demo mode
 
-Without a key, or with `DEMO_MODE=true`, `/api/status` reports demo mode. **Try the example** loads umbrella, cat, lamp, letter, and rain. Each mood has one prepared 100–150-word story. Other selections remain selectable but cannot generate until the owner supplies the key. **New story** in demo repeats the prepared mood fixture. Live provider failures never become canned stories.
+Without a key, or with `DEMO_MODE=true`, `/api/status` reports demo mode. **Try the example** loads umbrella, cat, lamp, letter, and rain and immediately generates. Each mood has one prepared 200–300-word story in four paragraphs. Other selections remain selectable but cannot generate until the owner supplies the key. **New story** in demo repeats the prepared mood fixture. Live provider failures never become canned stories.
 
 ## Read the code
 
@@ -32,13 +32,17 @@ Without a key, or with `DEMO_MODE=true`, `/api/status` reports demo mode. **Try 
 
 Stories use everyday Indian settings, Indian names where useful, and simple spoken English. The prompt avoids stereotypes, complicated vocabulary, unexplained regional-language words, and confusing poetic endings. A selected focal object, perspective, setting, and mood-appropriate ending give each request variety. These are prompt instructions, not a guarantee of cultural accuracy or readability.
 
-The server validates a 100–150-word story (title excluded) and object coverage, and permits exactly one repair. The prompt aims for 120–135 words, realistic events, a small complication, and a clear ending. Strict JSON schema has at most one fallback to JSON-object mode when the provider explicitly rejects the format. All attempts share a 20-second timeout. Coverage is a prefix/phrase heuristic, not a guarantee: it can produce false positives.
+The server validates a 200–300-word story (title excluded), 3–4 blank-line-separated paragraphs, a proper title, and object coverage, and permits exactly one repair. The prompt aims for 230–270 words, a setup, a twist, a concrete payoff, and meaningful roles for every object. Strict JSON schema has at most one fallback to JSON-object mode when the provider explicitly rejects the format. Each server request has a 20-second timeout. Coverage is a prefix/phrase heuristic, not a guarantee of causal roles or believable prose: model-generated story quality still varies.
+
+The browser automatically retries temporary story failures twice, pausing 650ms and 1300ms, without showing an error on the first failure. A user action has at most three server requests (each can have the single output repair above). Permanent input/setup errors are not retried. All attempts and pauses are cancelled on reset, changed selections/mood, or unmount. Loading locks generation with disabled controls and a synchronous guard. Exhausted failures show a storyteller-hiccup message and **Try again**, preserving selections. Free Groq quota/rate limits still apply; retries cannot remove provider limits.
 
 ## Narration and privacy
 
 Browser speech synthesis selects an available English voice and queues one sentence at a time. Replay reads saved text without another generation request. Voices, availability, and autoplay behavior depend on the browser/device. Text remains usable without speech; no voice selector or microphone is used. Consistent audio across devices would need a hosted narrator later.
 
-Selections and the last two stories live only in tab memory. In live mode, selected object names and generated stories (including repair text and up to two recent openings) are sent to Groq. The app does not store them in a database. Speech uses device-provided voices; voice-service processing depends on the browser. Local voices are preferred.
+Selections and recent openings live in tab memory. Every successful story also saves automatically in a versioned browser-local library (`storybowl.library`), with favorites and saved time. Users can browse, reopen without an AI call, star, and confirm deletion. Reset clears the composition, not the library. Storage warnings explain blocked, corrupt, or full storage; corrupt stored data is not overwritten, and unsaved stories stay in memory for the visit. History is not an account or cloud backup: clearing browser data removes it, and it doesn't sync across devices.
+
+In live mode, selected object names and generated stories (including repair text and up to two recent openings) are sent to Groq. There is no database, account, analytics, hosted audio, or microphone recording. Browser voice-service processing depends on the device; local voices are preferred. Share uses the native sheet where available, otherwise copies title, text, and the verified public app link; manual selection is available if clipboard access fails. Native cancellation does not copy or publish anything. Narration reports preparing/speaking/blocked/missing-voice states and supports stopping while preparing. Actual audio quality depends on the device.
 
 ## Troubleshooting
 

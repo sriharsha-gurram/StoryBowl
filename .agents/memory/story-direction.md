@@ -8,9 +8,9 @@ StoryBowl stories should have an Indian backdrop, using normal language that is 
 
 **How to apply:** Preserve this direction when editing story prompts or demo examples. Prefer everyday, varied Indian settings over stereotypes. Do not assume the user approved a specific hosted voice provider merely because they requested research.
 
-Stories should be 100–150 words, more realistic and interesting given the selected objects. Refer to the selectable items as "objects" everywhere, never "ingredients". The UI should feel clean and attractive, use only light colours with bright colour where needed, and not use the oval object-collection shape.
+Stories should be roughly 200–300 words in 3–4 short paragraphs, with a proper title, a setup, a twist, and a payoff. Every chosen object must play a meaningful role. Refer to selectable items as "objects" everywhere, never "ingredients". Preserve the warm, clean light-colour style, with bright colour only where needed, and do not use the oval object-collection shape.
 
-**Why:** The user explicitly requested longer stories and a cleaner visual redesign, and rejected the ingredient wording and oval shape.
+**Why:** The user superseded the earlier shorter-story requirement during the course-submission improvement pass, requested a meaningful role for every object, and explicitly asked to preserve the existing warm, clean style.
 
 **How to apply:** Carry these requirements into future writing, UI changes, accessibility labels, error messages, and demos. The user chose to keep browser voices; do not add a hosted narrator without a new request.
 
